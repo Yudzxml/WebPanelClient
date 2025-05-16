@@ -101,7 +101,7 @@
 
     function setCookie(name, value, days) {
       const expires = new Date(Date.now() + days * 864e5).toUTCString();
-      // Set cookie with path and SameSite for security and fetch credentials
+      // Tanpa HttpOnly supaya bisa dibaca di frontend
       document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/; SameSite=Lax`;
     }
 
@@ -155,6 +155,7 @@
         const data = await res.json();
         if (!res.ok) throw new Error(data.message || 'Login gagal');
 
+        // Simpan cookie user tanpa HttpOnly supaya bisa dibaca
         setCookie('user', JSON.stringify({ username, password }), 7);
 
         document.getElementById('loginBox').style.display = 'none';
