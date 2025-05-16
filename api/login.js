@@ -16,10 +16,10 @@ module.exports = async (req, res) => {
     // Encode JSON string agar aman di cookie
     const userCookieValue = encodeURIComponent(JSON.stringify({ username, password }));
 
-    // Set cookie dengan SameSite dan Path, bisa tambah Secure jika HTTPS
+    // Set cookie tanpa HttpOnly supaya bisa dibaca di frontend
     res.setHeader(
       "Set-Cookie",
-      `user=${userCookieValue}; Path=/; HttpOnly; SameSite=Lax`
+      `user=${userCookieValue}; Path=/; SameSite=Lax`
     );
 
     res.status(200).json({ message: "Login successful", data: result });
