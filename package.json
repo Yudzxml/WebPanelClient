@@ -1,0 +1,8 @@
+{
+  "name": "panel-manager-api",
+  "version": "1.0.0",
+  "description": "WEBSITE KONTOL HARD ANJGGG",
+  "dependencies": {
+    "axios": "^1.4.0"
+  }
+}
