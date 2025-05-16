@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OWNER PANEL ACCESS</title>
+  <style>
+    body {
+      background: #0a0a0f;
+      color: #d6f6ff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      padding: 24px 16px;
+      margin: 0;
+      min-height: 100vh;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    h1 {
+      text-align: center;
+      font-size: 2.4rem;
+      color: #00ccff;
+      text-shadow: 0 0 14px #00ccffaa;
+      margin-bottom: 32px;
+      font-weight: 700;
+    }
+    input {
+      width: 100%;
+      max-width: 320px;
+      padding: 12px 16px;
+      margin: 10px 0 20px 0;
+      border-radius: 10px;
+      border: none;
+      background: #111827;
+      color: #d6f6ff;
+      font-size: 1rem;
+      box-shadow: inset 0 0 8px #00ccff44;
+      outline: none;
+    }
+    button {
+      width: 100%;
+      max-width: 320px;
+      padding: 12px 0;
+      margin-top: 12px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #000;
+      background: #00ccff;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 0 16px #00ccffcc;
+    }
+    button.logout {
+      background: #ff4444;
+      color: #fff;
+      box-shadow: 0 0 16px #ff4444cc;
+      margin-top: 24px;
+    }
+    #loginBox, #mainBox {
+      max-width: 360px;
+      margin: 0 auto;
+      padding: 16px;
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 14px;
+      box-shadow: 0 0 12px #00ccff33;
+      margin-bottom: 32px;
+    }
+    label {
+      display: block;
+      margin-bottom: 6px;
+    }
+    #userList {
+      margin-top: 24px;
+      padding: 16px;
+      background: #111827;
+      border-radius: 12px;
+      box-shadow: 0 0 12px #00ccff22;
+      color: #00ccff;
+      font-size: 0.95rem;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    .userItem {
+      padding: 8px 0;
+      border-bottom: 1px solid #00ccff22;
+    }
+    .userItem:last-child {
+      border-bottom: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>OWNER PANEL</h1>
+
+  <div id="loginBox">
+    <h3 style="color:#00ccff;">OWNER LOGIN</h3>
+    <input type="email" id="email" placeholder="Email" />
+    <input type="password" id="password" placeholder="Password" />
+    <button onclick="ownerLogin()">LOGIN</button>
+  </div>
+
+  <div id="mainBox" style="display:none;">
+    <h3 style="color:#00ccff;">ADD USER ACCESS</h3>
+    <input type="text" id="newUsername" placeholder="New Username" />
+    <input type="password" id="newPassword" placeholder="New Password" />
+    <button onclick="addUser()">Add Access</button>
+
+    <h3 style="margin-top: 40px; color:#00ccff;">DELETE USER ACCESS</h3>
+    <input type="text" id="deleteUsername" placeholder="Username to Delete" />
+    <button onclick="deleteUser()">Delete Access</button>
+
+    <h3 style="margin-top: 40px; color:#00ccff;">VIEW ALL USERS</h3>
+    <button onclick="loadUsers()">Load All Users</button>
+    <div id="userList"></div>
+
+    <button class="logout" onclick="ownerLogout()">Logout</button>
+  </div>
+
+  <script>
+    // Cookie helpers
+    function setCookie(name, value, days = 1) {
+      const d = new Date();
+      d.setTime(d.getTime() + days * 24 * 60 * 60 * 1000);
+      const expires = "expires=" + d.toUTCString();
+      document.cookie = name + "=" + value + ";" + expires + ";path=/";
+    }
+
+    function getCookie(name) {
+      const cname = name + "=";
+      const decodedCookie = decodeURIComponent(document.cookie);
+      const ca = decodedCookie.split(';');
+      for(let c of ca) {
+        while (c.charAt(0) === ' ') c = c.substring(1);
+        if (c.indexOf(cname) === 0) return c.substring(cname.length, c.length);
+      }
+      return "";
+    }
+
+    function deleteCookie(name) {
+      document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    }
+
+    function ownerLogin() {
+      const email = document.getElementById('email').value.trim().toLowerCase();
+      const pass = document.getElementById('password').value.trim();
+
+      if (email !== 'yudzxml@gmail.com') {
+        alert('Access denied: Only Yudzxml');
+        return;
+      }
+
+      if (!pass) {
+        alert('Password is required.');
+        return;
+      }
+
+      if (pass === '@Yudzxml1122') {
+        setCookie('ownerLoggedIn', 'true', 1); // simpan cookie selama 1 hari
+        showMainPanel();
+      } else {
+        alert('Wrong password!');
+      }
+    }
+
+    function showMainPanel() {
+      document.getElementById('loginBox').style.display = 'none';
+      document.getElementById('mainBox').style.display = 'block';
+    }
+
+    function checkLoginStatus() {
+      if (getCookie('ownerLoggedIn') === 'true') {
+        showMainPanel();
+      }
+    }
+
+    function ownerLogout() {
+      deleteCookie('ownerLoggedIn');
+      document.getElementById('loginBox').style.display = 'block';
+      document.getElementById('mainBox').style.display = 'none';
+    }
+
+    async function addUser() {
+      const username = document.getElementById('newUsername').value.trim();
+      const password = document.getElementById('newPassword').value.trim();
+
+      if (!username || !password) {
+        alert('Fill in all fields!');
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/addUser', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || 'Failed to add user');
+
+        alert('User added successfully!');
+        document.getElementById('newUsername').value = '';
+        document.getElementById('newPassword').value = '';
+      } catch (err) {
+        alert(err.message);
+      }
+    }
+
+    async function deleteUser() {
+      const username = document.getElementById('deleteUsername').value.trim();
+
+      if (!username) {
+        alert('Please enter the username to delete.');
+        return;
+      }
+
+      if (!confirm(`Are you sure you want to delete user "${username}"?`)) {
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/delete-user', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username })
+        });
+
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || 'Failed to delete user');
+
+        alert('User deleted successfully!');
+        document.getElementById('deleteUsername').value = '';
+        loadUsers(); // refresh list
+      } catch (err) {
+        alert(err.message);
+      }
+    }
+
+    async function loadUsers() {
+      try {
+        const res = await fetch('/api/list-users');
+        const data = await res.json();
+
+        if (!res.ok) throw new Error(data.message || 'Failed to load users');
+
+        const container = document.getElementById('userList');
+        container.innerHTML = '';
+
+        if (!data.users || data.users.length === 0) {
+          container.innerHTML = '<p style="color:gray;">No users found.</p>';
+          return;
+        }
+
+        data.users.forEach(user => {
+          const div = document.createElement('div');
+          div.className = 'userItem';
+          div.textContent = user.username;
+          container.appendChild(div);
+        });
+      } catch (err) {
+        alert(err.message);
+      }
+    }
+
+    window.onload = () => {
+      checkLoginStatus();
+    };
+  </script>
+</body>
+</html>
