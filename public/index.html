@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Panel Manager</title>
+  <style>
+    body {
+      background: #0f0f0f;
+      color: #fff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      padding: 20px;
+      margin: 0;
+    }
+    h1, h3 {
+      margin-bottom: 10px;
+    }
+    input, select, button {
+      width: 100%;
+      max-width: 300px;
+      margin: 8px 0;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      box-sizing: border-box;
+      font-size: 1rem;
+    }
+    button {
+      background: #00ff99;
+      color: #000;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      font-weight: bold;
+    }
+    button:hover {
+      background: #00cc77;
+    }
+    #loginBox, #mainBox {
+      max-width: 320px;
+      margin-bottom: 30px;
+    }
+    .panel-box {
+      background: #111;
+      margin-top: 12px;
+      padding: 12px 15px;
+      border-radius: 8px;
+      box-shadow: 0 0 8px #00ff99aa;
+      font-size: 0.95rem;
+    }
+    .panel-box b {
+      display: inline-block;
+      width: 90px;
+    }
+    .panel-box button {
+      margin-top: 10px;
+      width: auto;
+      padding: 6px 14px;
+      font-size: 0.9rem;
+      border-radius: 6px;
+    }
+    @media (max-width: 400px) {
+      body {
+        padding: 10px;
+      }
+      input, select, button, #loginBox, #mainBox {
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Panel Manager</h1>
+
+  <div id="loginBox">
+    <h3>Login</h3>
+    <input type="text" id="username" placeholder="628xxxx" />
+    <input type="password" id="password" placeholder="Password" />
+    <button onclick="login()">Login</button>
+  </div>
+
+  <div id="mainBox" style="display:none">
+    <h3>Create Panel</h3>
+    <input type="text" id="cuser" placeholder="Panel Username" />
+    <input type="password" id="cpass" placeholder="Panel Password" />
+    <select id="ram">
+      <option value="1gb">1 GB</option>
+      <option value="2gb">2 GB</option>
+    </select>
+    <button onclick="createPanel()">Create</button>
+
+    <h3>Your Panels</h3>
+    <div id="panels"></div>
+  </div>
+
+  <script>
+    const API_URL = '/api'; // sesuaikan jika beda domain/path
+
+    function setCookie(name, value, days) {
+      const expires = new Date(Date.now() + days*864e5).toUTCString();
+      document.cookie = name + '=' + encodeURIComponent(value) + '; expires=' + expires + '; path=/';
+    }
+
+    function getCookie(name) {
+      return document.cookie.split('; ').reduce((r, v) => {
+        const parts = v.split('=');
+        return parts[0] === name ? decodeURIComponent(parts[1]) : r;
+      }, '');
+    }
+
+    function getUserFromCookie() {
+      try {
+        const userStr = getCookie('user');
+        if (!userStr) return null;
+        return JSON.parse(userStr);
+      } catch {
+        return null;
+      }
+    }
+
+    async function login() {
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+      if (!username || !password) {
+        alert('Isi username dan password!');
+        return;
+      }
+
+      try {
+        const res = await fetch(API_URL + '/login', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ username, password }),
+          credentials: 'include', // penting supaya cookie HttpOnly tersimpan
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || 'Login gagal');
+
+        document.getElementById('loginBox').style.display = 'none';
+        document.getElementById('mainBox').style.display = 'block';
+
+        loadPanels();
+      } catch (e) {
+        alert(e.message);
+      }
+    }
+
+    async function loadPanels() {
+      const user = getUserFromCookie();
+      if (!user) return;
+
+      try {
+        const res = await fetch(API_URL + '/panels', {
+          credentials: 'include',
+        });
+        if (!res.ok) throw new Error('Gagal load panels');
+        const panels = await res.json();
+
+        const container = document.getElementById('panels');
+        container.innerHTML = '';
+        if (!Array.isArray(panels) || panels.length === 0) {
+          container.innerHTML = '<i>No panels yet</i>';
+          return;
+        }
+
+        panels.forEach(panel => {
+          const div = document.createElement('div');
+          div.className = 'panel-box';
+          div.innerHTML = `
+            <b>Server ID:</b> ${panel.serverId || 'N/A'}<br>
+            <b>Username:</b> ${panel.username || 'N/A'}<br>
+            <button onclick="deletePanel('${panel.serverId}')">Delete</button>
+          `;
+          container.appendChild(div);
+        });
+      } catch (e) {
+        alert(e.message);
+      }
+    }
+
+    async function createPanel() {
+      const user = getUserFromCookie();
+      if (!user) {
+        alert('Login dulu');
+        return;
+      }
+
+      const cuser = document.getElementById('cuser').value.trim();
+      const cpass = document.getElementById('cpass').value.trim();
+      const ram = document.getElementById('ram').value;
+
+      if (!cuser || !cpass) {
+        alert('Isi username dan password panel');
+        return;
+      }
+
+      try {
+        const res = await fetch(API_URL + '/create-panel', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          credentials: 'include',
+          body: JSON.stringify({
+            username: user.username,
+            password: user.password,
+            panelData: { username: cuser, password: cpass, ram }
+          }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || 'Gagal buat panel');
+
+        alert('Panel created!');
+        loadPanels();
+      } catch (e) {
+        alert(e.message);
+      }
+    }
+
+    async function deletePanel(serverId) {
+      const user = getUserFromCookie();
+      if (!user) {
+        alert('Login dulu');
+        return;
+      }
+
+      try {
+        const res = await fetch(API_URL + '/delete-panel', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          credentials: 'include',
+          body: JSON.stringify({
+            username: user.username,
+            password: user.password,
+            serverId,
+          }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || 'Gagal hapus panel');
+
+        alert('Panel deleted!');
+        loadPanels();
+      } catch (e) {
+        alert(e.message);
+      }
+    }
+
+    // Auto login if cookies present
+    window.onload = () => {
+      const user = getUserFromCookie();
+      if (user) {
+        document.getElementById('loginBox').style.display = 'none';
+        document.getElementById('mainBox').style.display = 'block';
+        loadPanels();
+      }
+    };
+  </script>
+</body>
+  </html
