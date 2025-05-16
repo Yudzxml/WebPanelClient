@@ -52,11 +52,12 @@ module.exports = async (req, res) => {
         .json({ message: "External API error", details: apiRes.data });
     }
 
-    const createdPanel = apiRes.data;
-
-    // Pastikan username dan password sesuai input (bukan dari API response)
-    createdPanel.username = username;
-    createdPanel.password = password;
+    const createdPanel = {
+  ...apiRes.data,
+  username: panelData.username,
+  email: panelData.email || `${panelData.username}@gmail.com`,
+  password: panelData.password || password,
+};
 
     await updateGithubPanel(username, password, createdPanel, "add");
 
