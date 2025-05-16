@@ -268,7 +268,7 @@
       }
     }
 
-    async function deletePanel(serverId) {
+    async function deletePanel(serverId, userId) {
       const user = getUserFromCookie();
       if (!user) {
         alert('Please login first.');
@@ -283,10 +283,11 @@
           headers: {'Content-Type': 'application/json'},
           credentials: 'include',
           body: JSON.stringify({
-            username: user.username,
-            password: user.password,
-            serverId,
-          }),
+  username: user.username,
+  password: user.password,
+  serverId,
+  userId
+}),
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data.message || 'Failed to delete panel.');
