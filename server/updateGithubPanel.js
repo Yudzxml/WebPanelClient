@@ -37,8 +37,14 @@ async function updateGithubPanel(username, password, panelData, action) {
         contentJson[username].ListPanel = [];
       }
     }
-
-    if (action === "add") {
+    
+   if (action === "deleteUser") {
+  if (contentJson[username]) {
+    delete contentJson[username];
+  } else {
+    throw new Error(`User ${username} not found`);
+  }
+} else if (action === "add") {
       const exists = contentJson[username].ListPanel.some(
         (panel) => String(panel.serverId) === String(panelData.serverId)
       );
