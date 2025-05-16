@@ -25,26 +25,41 @@ async function updateGithubPanel(username, password, panelData, action) {
     const file = await getFileContent();
     const contentJson = JSON.parse(Buffer.from(file.content, "base64").toString());
 
+    // Inisialisasi user jika belum ada
     if (!contentJson[username]) {
       contentJson[username] = { UserPassword: password, ListPanel: [] };
-    } else if (!Array.isArray(contentJson[username].ListPanel)) {
-      contentJson[username].ListPanel = [];
+    } else {
+      // Perbarui password jika belum ada atau berbeda
+      if (!contentJson[username].UserPassword || contentJson[username].UserPassword !== password) {
+        contentJson[username].UserPassword = password;
+      }
+      if (!Array.isArray(contentJson[username].ListPanel)) {
+        contentJson[username].ListPanel = [];
+      }
     }
 
     if (action === "add") {
       const exists = contentJson[username].ListPanel.some(
-        (panel) => panel.serverId === panelData.serverId
+        (panel) => String(panel.serverId) === String(panelData.serverId)
       );
       if (!exists) {
         contentJson[username].ListPanel.push(panelData);
       }
     } else if (action === "remove") {
-      // Filter hapus panel yang cocok serverId dan userId
+      if (!panelData.serverId || !panelData.userId) {
+        throw new Error("Missing 'serverId' or 'userId' in panelData for removal.");
+      }
+
       contentJson[username].ListPanel = contentJson[username].ListPanel.filter(
         (panel) =>
-          Number(panel.serverId) !== Number(panelData.serverId) ||
-          Number(panel.userId) !== Number(panelData.userId)
+          String(panel.serverId) !== String(panelData.serverId) ||
+          String(panel.userId) !== String(panelData.userId)
       );
+
+      // Jika ListPanel kosong setelah penghapusan, hapus user sepenuhnya
+      if (contentJson[username].ListPanel.length === 0) {
+        delete contentJson[username];
+      }
     }
 
     const updatedContent = Buffer.from(JSON.stringify(contentJson, null, 2)).toString("base64");
