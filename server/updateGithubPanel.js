@@ -56,10 +56,7 @@ async function updateGithubPanel(username, password, panelData, action) {
           String(panel.userId) !== String(panelData.userId)
       );
 
-      // Jika ListPanel kosong setelah penghapusan, hapus user sepenuhnya
-      if (contentJson[username].ListPanel.length === 0) {
-        delete contentJson[username];
-      }
+      // Tidak menghapus user meskipun ListPanel kosong
     }
 
     const updatedContent = Buffer.from(JSON.stringify(contentJson, null, 2)).toString("base64");
