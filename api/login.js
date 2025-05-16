@@ -6,23 +6,33 @@ module.exports = async (req, res) => {
   const body = await parseBody(req);
   const { username, password } = body;
 
+  if (!username || !password) {
+    return res.status(400).json({ message: "Username dan password wajib diisi" });
+  }
+
   try {
     const result = await ensureUserExists(username, password);
+
+    // Encode JSON string agar aman di cookie
+    const userCookieValue = encodeURIComponent(JSON.stringify({ username, password }));
+
+    // Set cookie dengan SameSite dan Path, bisa tambah Secure jika HTTPS
     res.setHeader(
       "Set-Cookie",
-      `user=${JSON.stringify({ username, password })}; Path=/; HttpOnly`
+      `user=${userCookieValue}; Path=/; HttpOnly; SameSite=Lax`
     );
+
     res.status(200).json({ message: "Login successful", data: result });
   } catch (err) {
     console.error("Login error:", err);
-    res.status(500).json({ message: "Login failed", error: err.message });
+    res.status(401).json({ message: "Login failed", error: err.message });
   }
 };
 
 function parseBody(req) {
   return new Promise((resolve) => {
     let body = "";
-    req.on("data", chunk => body += chunk.toString());
+    req.on("data", chunk => (body += chunk.toString()));
     req.on("end", () => {
       try {
         resolve(JSON.parse(body));
