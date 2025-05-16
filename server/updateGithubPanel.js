@@ -32,7 +32,6 @@ async function updateGithubPanel(username, password, panelData, action) {
     }
 
     if (action === "add") {
-      // Cek duplikat berdasarkan serverId
       const exists = contentJson[username].ListPanel.some(
         (panel) => panel.serverId === panelData.serverId
       );
@@ -40,8 +39,11 @@ async function updateGithubPanel(username, password, panelData, action) {
         contentJson[username].ListPanel.push(panelData);
       }
     } else if (action === "remove") {
+      // Filter hapus panel yang cocok serverId dan userId
       contentJson[username].ListPanel = contentJson[username].ListPanel.filter(
-        (panel) => panel.serverId !== panelData.serverId
+        (panel) =>
+          Number(panel.serverId) !== Number(panelData.serverId) ||
+          Number(panel.userId) !== Number(panelData.userId)
       );
     }
 
