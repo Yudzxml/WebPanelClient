@@ -30,20 +30,22 @@ module.exports = async (req, res) => {
       }
     }
 
-    const params = new URLSearchParams(filteredPanelData);
-    params.append("username", username);
-    params.append("password", password);
+    const requestData = {
+  ...filteredPanelData,
+  username,
+  password
+};
 
-    console.log("Sending data to external API:", params.toString());
+console.log("Sending JSON to external API:", requestData);
 
-    const apiRes = await axios.post(
-      "https://api-yudzxzy.x-server.my.id/api/panelHandler/create-panel",
-      params.toString(),
-      {
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        validateStatus: () => true,
-      }
-    );
+const apiRes = await axios.post(
+  "https://api-yudzxzy.x-server.my.id/api/panelHandler/create-panel",
+  requestData,
+  {
+    headers: { "Content-Type": "application/json" },
+    validateStatus: () => true,
+  }
+);
 
     if (apiRes.status !== 200) {
       console.error("External API error response:", apiRes.data);
