@@ -2,7 +2,8 @@ const axios = require("axios");
 const updateGithubPanel = require("../server/updateGithubPanel");
 
 module.exports = async (req, res) => {
-  if (req.method !== "POST") return res.status(405).json({ message: "Method not allowed" });
+  if (req.method !== "POST")
+    return res.status(405).json({ message: "Method not allowed" });
 
   const body = await parseBody(req);
   const { username, password, panelData } = body;
@@ -12,13 +13,16 @@ module.exports = async (req, res) => {
   }
 
   try {
-    // Convert panelData object to URLSearchParams
+    // Membuat URLSearchParams dengan gabungan username, password, dan panelData
     const params = new URLSearchParams();
+    params.append("username", username);
+    params.append("password", password);
+
     for (const key in panelData) {
       params.append(key, panelData[key]);
     }
 
-    // Request ke API eksternal untuk create panel
+    // Kirim request POST ke API eksternal
     const apiRes = await axios.post(
       "https://api-yudzxzy.x-server.my.id/api/panelHandler/create-panel",
       params.toString(),
@@ -33,7 +37,7 @@ module.exports = async (req, res) => {
 
     const createdPanel = apiRes.data;
 
-    // Simpan data panel ke GitHub (atau database kamu)
+    // Simpan data panel ke GitHub atau database
     await updateGithubPanel(username, password, createdPanel, "add");
 
     res.status(200).json({ message: "Panel created and saved", panel: createdPanel });
