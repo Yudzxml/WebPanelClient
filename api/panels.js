@@ -19,23 +19,28 @@ module.exports = async (req, res) => {
   }
 
   const { username, password } = user;
-
   if (!username || !password) {
     return res.status(400).json({ message: "Missing credentials" });
   }
 
   try {
-    // Ambil file dari GitHub
-    const repoUrl = "https://raw.githubusercontent.com/Yudzxml/WebClientV1/refs/heads/main/panelDatabase.json";
-    const response = await axios.get(repoUrl);
+    // Ambil file langsung dari GitHub (tanpa cache)
+    const repoUrl = "https://api.github.com/repos/Yudzxml/WebClientV1/contents/panelDatabase.json";
+    const response = await axios.get(repoUrl, {
+      headers: {
+        "Accept": "application/vnd.github.v3.raw"
+      }
+    });
 
     const data = response.data;
 
     if (!data[username]) {
-      return res.status(200).json([]); // User belum punya panel
+      return res.status(200).json([]); // Belum ada panel untuk user ini
     }
 
-    const panels = data[username].ListPanel || [];
+    const panels = Array.isArray(data[username].ListPanel)
+      ? data[username].ListPanel
+      : [];
 
     return res.status(200).json(panels);
   } catch (err) {
