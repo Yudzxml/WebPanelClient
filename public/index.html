@@ -91,24 +91,23 @@ button {
 
 /* ===== Copy Buttons ===== */
 .copy-btn {
-  background-color: transparent;
+  background: none;
   border: 1px solid #00ccff;
   cursor: pointer;
-  font-size: 0.9rem;
-  font-weight: 500;
+  font-size: 0.75rem;
   color: #00ccff;
-  padding: 6px 10px;
-  border-radius: 6px;
-  transition: background-color 0.2s ease, text-decoration 0.2s ease;
+  padding: 3px 6px;
+  border-radius: 5px;
+  transition: background-color 0.2s ease;
   display: inline-block;
-  min-width: 110px;
+  min-width: 80px;
   text-align: center;
-  margin: 4px 2px;
+  margin: 2px;
 }
 
 .copy-btn:hover {
-  background-color: #003f55;
   text-decoration: underline;
+  background-color: #003f55;
 }
 
 .toggle-pass-btn {
@@ -180,31 +179,32 @@ button {
   flex-wrap: wrap;
 }
 
+/* ===== Tombol Delete ===== */
 .panel-actions .delete-btn {
   flex: 1;
-  padding: 10px 0;
-  font-size: 1rem;
+  padding: 8px 14px;
+  font-size: 0.9rem;
   border-radius: 10px;
   background: #ff3366;
   color: white;
   box-shadow: 0 0 12px #ff3366cc;
   border: none;
-  font-weight: 700;
+  font-weight: 600;
   transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
 }
-.panel-actions .delete-btn:hover { 
-  background: #cc204f; 
-  box-shadow: 0 0 18px #ff5577ff; 
-  transform: translateY(-2px); 
+.panel-actions .delete-btn:hover {
+  background: #cc204f;
+  box-shadow: 0 0 20px #ff5577ff;
+  transform: translateY(-2px);
 }
-.panel-actions .delete-btn:active { 
-  transform: translateY(0); 
-  box-shadow: 0 0 12px #ff3366cc; 
+.panel-actions .delete-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 0 12px #ff3366cc;
 }
 
-/* Untuk tombol copy di dalam .panel-actions */
-.panel-actions button.copy-btn {
-  flex: 0 0 auto;
+/* ===== Tombol Copy ===== */
+.panel-actions .copy-btn {
+  flex: 1;
   padding: 8px 14px;
   font-size: 0.9rem;
   border-radius: 10px;
@@ -215,12 +215,12 @@ button {
   font-weight: 600;
   transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
 }
-.panel-actions button.copy-btn:hover {
+.panel-actions .copy-btn:hover {
   background: #005fa3;
   box-shadow: 0 0 20px #3399ffcc;
   transform: translateY(-2px);
 }
-.panel-actions button.copy-btn:active {
+.panel-actions .copy-btn:active {
   transform: translateY(0);
   box-shadow: 0 0 12px #0077cccc;
 }
