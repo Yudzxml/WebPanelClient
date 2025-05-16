@@ -104,6 +104,18 @@ button {
   background-color: #003f55;
 }
 
+.toggle-pass-btn {
+  margin-left: 8px;
+  background: transparent;
+  color: #00ccff;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+}
+.toggle-pass-btn:hover {
+  text-decoration: underline;
+}
+
 /* ===== Boxes ===== */
 #loginBox, #mainBox {
   max-width: 340px;
@@ -320,7 +332,7 @@ button {
   panels.forEach(panel => {
     const loginUrl = panel.loginUrl || 'https://private-server.yudzxsnayders.x-vvip.cloud/';
     const encoded = encodeURIComponent(JSON.stringify(panel));
-    
+
     const div = document.createElement('div');
     div.className = 'panel-box';
 
@@ -329,7 +341,11 @@ button {
       <div class="panel-info"><b>User ID:</b> ${panel.userId || 'N/A'}</div>
       <div class="panel-info"><b>Login URL:</b> ${loginUrl}</div>
       <div class="panel-info"><b>Username:</b> ${panel.username || 'N/A'}</div>
-      <div class="panel-info"><b>Password:</b> ${panel.password || '****'}</div>
+      <div class="panel-info">
+        <b>Password:</b>
+        <span class="password-hidden" data-password="${panel.password || ''}">****</span>
+        <button class="toggle-pass-btn" onclick="togglePasswordVisibility(this)">Show</button>
+      </div>
       <div class="panel-info"><b>RAM:</b> ${panel.ram || 'Unknown'}</div>
       <div class="panel-info"><b>Created:</b> ${panel.createdAt ? new Date(panel.createdAt).toLocaleString() : 'N/A'}</div>
 
@@ -351,6 +367,19 @@ function copyToClipboard(text) {
   }).catch(() => {  
     alert('Failed to copy text.');  
   });  
+}
+
+function togglePasswordVisibility(button) {
+  const span = button.previousElementSibling;
+  const realPassword = span.getAttribute('data-password');
+
+  if (span.textContent === '****') {
+    span.textContent = realPassword || '';
+    button.textContent = 'Hide';
+  } else {
+    span.textContent = '****';
+    button.textContent = 'Show';
+  }
 }
 
     async function createPanel() {
