@@ -100,23 +100,35 @@
     const API_URL = '/api';
 
     function setCookie(name, value, days) {
-      const expires = new Date(Date.now() + days*864e5).toUTCString();
-      document.cookie = name + '=' + encodeURIComponent(value) + '; expires=' + expires + '; path=/';
+      const expires = new Date(Date.now() + days * 864e5).toUTCString();
+      // Set cookie with path and SameSite for security and fetch credentials
+      document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/; SameSite=Lax`;
     }
 
     function getCookie(name) {
-      return document.cookie.split('; ').reduce((r, v) => {
-        const parts = v.split('=');
-        return parts[0] === name ? decodeURIComponent(parts[1]) : r;
-      }, '');
+      const cookies = document.cookie ? document.cookie.split('; ') : [];
+      for (let i = 0; i < cookies.length; i++) {
+        const parts = cookies[i].split('=');
+        const cookieName = parts.shift();
+        const cookieValue = parts.join('=');
+        if (cookieName === name) {
+          return decodeURIComponent(cookieValue);
+        }
+      }
+      return '';
     }
 
     function getUserFromCookie() {
       try {
         const userStr = getCookie('user');
         if (!userStr) return null;
-        return JSON.parse(userStr);
-      } catch {
+        const user = JSON.parse(userStr);
+        if (user && typeof user.username === 'string' && typeof user.password === 'string') {
+          return user;
+        }
+        return null;
+      } catch (e) {
+        console.warn('Failed to parse user cookie:', e);
         return null;
       }
     }
@@ -143,7 +155,6 @@
         const data = await res.json();
         if (!res.ok) throw new Error(data.message || 'Login gagal');
 
-        // Simpan cookie user tanpa HttpOnly supaya bisa dibaca frontend
         setCookie('user', JSON.stringify({ username, password }), 7);
 
         document.getElementById('loginBox').style.display = 'none';
@@ -159,7 +170,12 @@
 
     async function loadPanels() {
       const user = getUserFromCookie();
-      if (!user) return;
+      if (!user) {
+        alert('Silakan login dulu');
+        document.getElementById('loginBox').style.display = 'block';
+        document.getElementById('mainBox').style.display = 'none';
+        return;
+      }
 
       try {
         const res = await fetch(API_URL + '/panels', {
@@ -231,7 +247,6 @@
         if (!res.ok) throw new Error(data.message || 'Gagal buat panel');
 
         alert('Panel created!');
-        // reset input
         document.getElementById('cuser').value = '';
         document.getElementById('cpass').value = '';
         loadPanels();
