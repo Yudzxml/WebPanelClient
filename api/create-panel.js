@@ -22,7 +22,7 @@ module.exports = async (req, res) => {
         .json({ message: "Missing or invalid required fields" });
     }
 
-    // Hapus field sensitif dari panelData jika ada
+    // Siapkan parameter POST ke API eksternal
     const filteredPanelData = {};
     for (const key in panelData) {
       if (key !== "username" && key !== "password") {
@@ -41,7 +41,7 @@ module.exports = async (req, res) => {
       params.toString(),
       {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        validateStatus: () => true, // agar axios tidak throw otomatis untuk status >=400
+        validateStatus: () => true,
       }
     );
 
@@ -53,6 +53,10 @@ module.exports = async (req, res) => {
     }
 
     const createdPanel = apiRes.data;
+
+    // Pastikan username dan password sesuai input (bukan dari API response)
+    createdPanel.username = username;
+    createdPanel.password = password;
 
     await updateGithubPanel(username, password, createdPanel, "add");
 
