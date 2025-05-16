@@ -35,8 +35,20 @@ h3 { color: #00ccff; border-bottom: 2px solid #00ccff55; padding-bottom: 8px; ma
 
 .panel-info { margin-bottom: 10px; font-size: 0.95rem; line-height: 1.4; word-break: break-word; display: flex; align-items: center; justify-content: space-between; } .panel-info b { display: inline-block; width: 100px; color: #00ccff; font-weight: 700; }
 
-.panel-actions { margin-top: 16px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.panel-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
 
+.panel-actions button {
+  min-height: 40px;
+  text-align: center;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 /* ===== Tombol Delete ===== */ .panel-actions .delete-btn { width: 100%; padding: 8px 14px; font-size: 0.9rem; border-radius: 10px; background: #ff3366; color: white; box-shadow: 0 0 12px #ff3366cc; border: none; font-weight: 600; transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease; } .panel-actions .delete-btn:hover { background: #cc204f; box-shadow: 0 0 20px #ff5577ff; transform: translateY(-2px); } .panel-actions .delete-btn:active { transform: translateY(0); box-shadow: 0 0 12px #ff3366cc; }
 
 /* ===== Tombol Copy ===== */ 
@@ -86,11 +98,6 @@ h3 { color: #00ccff; border-bottom: 2px solid #00ccff55; padding-bottom: 8px; ma
 }
 
 @media (max-width: 768px) { .panel-box { width: 90vw; padding: 22px 26px; } } 
-.panel-actions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
 </style>
 
 </head>
