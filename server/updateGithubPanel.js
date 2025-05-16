@@ -20,52 +20,62 @@ async function getFileContent() {
   return res.data;
 }
 
-async function updateGithubPanel(username, password, panelData, action) {
+async function updateGithubPanel(username, password, panelData = {}, action = "add") {
   try {
     const file = await getFileContent();
-    const contentJson = JSON.parse(Buffer.from(file.content, "base64").toString());
+    const decodedContent = Buffer.from(file.content, "base64").toString();
+    const contentJson = JSON.parse(decodedContent);
 
-    // Inisialisasi user jika belum ada
-    if (!contentJson[username]) {
-      contentJson[username] = { UserPassword: password, ListPanel: [] };
+    // DELETE USER
+    if (action === "deleteUser") {
+      if (contentJson[username]) {
+        delete contentJson[username];
+      } else {
+        throw new Error(`User "${username}" not found.`);
+      }
     } else {
-      // Perbarui password jika belum ada atau berbeda
-      if (!contentJson[username].UserPassword || contentJson[username].UserPassword !== password) {
+      // Inisialisasi user jika belum ada
+      if (!contentJson[username]) {
+        contentJson[username] = {
+          UserPassword: password,
+          ListPanel: [],
+        };
+      }
+
+      // Update password jika berbeda
+      if (contentJson[username].UserPassword !== password) {
         contentJson[username].UserPassword = password;
       }
+
+      // Pastikan ListPanel adalah array
       if (!Array.isArray(contentJson[username].ListPanel)) {
         contentJson[username].ListPanel = [];
       }
-    }
-    
-   if (action === "deleteUser") {
-  if (contentJson[username]) {
-    delete contentJson[username];
-  } else {
-    throw new Error(`User ${username} not found`);
-  }
-} else if (action === "add") {
-      const exists = contentJson[username].ListPanel.some(
-        (panel) => String(panel.serverId) === String(panelData.serverId)
-      );
-      if (!exists) {
-        contentJson[username].ListPanel.push(panelData);
-      }
-    } else if (action === "remove") {
-      if (!panelData.serverId || !panelData.userId) {
-        throw new Error("Missing 'serverId' or 'userId' in panelData for removal.");
-      }
 
-      contentJson[username].ListPanel = contentJson[username].ListPanel.filter(
-        (panel) =>
-          String(panel.serverId) !== String(panelData.serverId) ||
-          String(panel.userId) !== String(panelData.userId)
-      );
+      if (action === "add") {
+        const exists = contentJson[username].ListPanel.some(
+          (panel) => String(panel.serverId) === String(panelData.serverId)
+        );
+        if (!exists) {
+          contentJson[username].ListPanel.push(panelData);
+        }
+      } else if (action === "remove") {
+        if (!panelData.serverId || !panelData.userId) {
+          throw new Error("Missing 'serverId' or 'userId' in panelData for removal.");
+        }
 
-      // Tidak menghapus user meskipun ListPanel kosong
+        contentJson[username].ListPanel = contentJson[username].ListPanel.filter(
+          (panel) =>
+            String(panel.serverId) !== String(panelData.serverId) ||
+            String(panel.userId) !== String(panelData.userId)
+        );
+      }
     }
 
-    const updatedContent = Buffer.from(JSON.stringify(contentJson, null, 2)).toString("base64");
+    // Encode dan update file ke GitHub
+    const updatedContent = Buffer.from(
+      JSON.stringify(contentJson, null, 2)
+    ).toString("base64");
 
     await axios.put(
       FILE_URL,
