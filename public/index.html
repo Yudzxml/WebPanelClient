@@ -91,18 +91,24 @@ button {
 
 /* ===== Copy Buttons ===== */
 .copy-btn {
-  background: none;
-  border: none;
+  background-color: transparent;
+  border: 1px solid #00ccff;
   cursor: pointer;
   font-size: 0.9rem;
+  font-weight: 500;
   color: #00ccff;
-  padding: 4px 8px;
+  padding: 6px 10px;
   border-radius: 6px;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease, text-decoration 0.2s ease;
+  display: inline-block;
+  min-width: 110px;
+  text-align: center;
+  margin: 4px 2px;
 }
-.copy-btn:hover { 
-  text-decoration: underline; 
+
+.copy-btn:hover {
   background-color: #003f55;
+  text-decoration: underline;
 }
 
 .toggle-pass-btn {
