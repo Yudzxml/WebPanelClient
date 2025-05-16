@@ -21,7 +21,7 @@ module.exports = async (req, res) => {
       params.toString(),
       {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        validateStatus: () => true, // agar axios tidak otomatis throw error
+        validateStatus: () => true,
       }
     );
 
@@ -32,7 +32,8 @@ module.exports = async (req, res) => {
         .json({ message: "Failed to delete panel on external API", details: apiRes.data });
     }
 
-    await updateGithubPanel(username, password, { serverId }, "remove");
+    // Kirim serverId dan userId supaya hanya panel yang sesuai yang dihapus
+    await updateGithubPanel(username, password, { serverId, userId }, "remove");
 
     return res.status(200).json({ message: "Panel deleted and updated" });
   } catch (err) {
