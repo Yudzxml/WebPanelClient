@@ -32,8 +32,12 @@
       transition: background 0.3s ease;
       font-weight: bold;
     }
-    button:hover {
+    button:hover:not(:disabled) {
       background: #00cc77;
+    }
+    button:disabled {
+      background: #555;
+      cursor: not-allowed;
     }
     #loginBox, #mainBox {
       max-width: 320px;
@@ -73,9 +77,9 @@
 
   <div id="loginBox">
     <h3>Login</h3>
-    <input type="text" id="username" placeholder="628xxxx" />
-    <input type="password" id="password" placeholder="Password" />
-    <button onclick="login()">Login</button>
+    <input type="text" id="username" placeholder="628xxxx" autocomplete="username" />
+    <input type="password" id="password" placeholder="Password" autocomplete="current-password" />
+    <button id="loginBtn" onclick="login()">Login</button>
   </div>
 
   <div id="mainBox" style="display:none">
@@ -86,14 +90,14 @@
       <option value="1gb">1 GB</option>
       <option value="2gb">2 GB</option>
     </select>
-    <button onclick="createPanel()">Create</button>
+    <button id="createBtn" onclick="createPanel()">Create</button>
 
     <h3>Your Panels</h3>
     <div id="panels"></div>
   </div>
 
   <script>
-    const API_URL = '/api'; // sesuaikan jika beda domain/path
+    const API_URL = '/api';
 
     function setCookie(name, value, days) {
       const expires = new Date(Date.now() + days*864e5).toUTCString();
@@ -118,10 +122,14 @@
     }
 
     async function login() {
+      const btn = document.getElementById('loginBtn');
+      btn.disabled = true;
+
       const username = document.getElementById('username').value.trim();
       const password = document.getElementById('password').value.trim();
       if (!username || !password) {
         alert('Isi username dan password!');
+        btn.disabled = false;
         return;
       }
 
@@ -130,10 +138,13 @@
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({ username, password }),
-          credentials: 'include', // penting supaya cookie HttpOnly tersimpan
+          credentials: 'include',
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data.message || 'Login gagal');
+
+        // Simpan cookie user tanpa HttpOnly supaya bisa dibaca frontend
+        setCookie('user', JSON.stringify({ username, password }), 7);
 
         document.getElementById('loginBox').style.display = 'none';
         document.getElementById('mainBox').style.display = 'block';
@@ -141,6 +152,8 @@
         loadPanels();
       } catch (e) {
         alert(e.message);
+      } finally {
+        btn.disabled = false;
       }
     }
 
@@ -155,32 +168,41 @@
         if (!res.ok) throw new Error('Gagal load panels');
         const panels = await res.json();
 
-        const container = document.getElementById('panels');
-        container.innerHTML = '';
-        if (!Array.isArray(panels) || panels.length === 0) {
-          container.innerHTML = '<i>No panels yet</i>';
-          return;
-        }
-
-        panels.forEach(panel => {
-          const div = document.createElement('div');
-          div.className = 'panel-box';
-          div.innerHTML = `
-            <b>Server ID:</b> ${panel.serverId || 'N/A'}<br>
-            <b>Username:</b> ${panel.username || 'N/A'}<br>
-            <button onclick="deletePanel('${panel.serverId}')">Delete</button>
-          `;
-          container.appendChild(div);
-        });
+        renderPanels(panels);
       } catch (e) {
         alert(e.message);
       }
     }
 
+    function renderPanels(panels) {
+      const container = document.getElementById('panels');
+      container.innerHTML = '';
+
+      if (!Array.isArray(panels) || panels.length === 0) {
+        container.innerHTML = '<i>No panels yet</i>';
+        return;
+      }
+
+      panels.forEach(panel => {
+        const div = document.createElement('div');
+        div.className = 'panel-box';
+        div.innerHTML = `
+          <b>Server ID:</b> ${panel.serverId || 'N/A'}<br>
+          <b>Username:</b> ${panel.username || 'N/A'}<br>
+          <button onclick="deletePanel('${panel.serverId}')">Delete</button>
+        `;
+        container.appendChild(div);
+      });
+    }
+
     async function createPanel() {
+      const btn = document.getElementById('createBtn');
+      btn.disabled = true;
+
       const user = getUserFromCookie();
       if (!user) {
         alert('Login dulu');
+        btn.disabled = false;
         return;
       }
 
@@ -190,6 +212,7 @@
 
       if (!cuser || !cpass) {
         alert('Isi username dan password panel');
+        btn.disabled = false;
         return;
       }
 
@@ -208,9 +231,14 @@
         if (!res.ok) throw new Error(data.message || 'Gagal buat panel');
 
         alert('Panel created!');
+        // reset input
+        document.getElementById('cuser').value = '';
+        document.getElementById('cpass').value = '';
         loadPanels();
       } catch (e) {
         alert(e.message);
+      } finally {
+        btn.disabled = false;
       }
     }
 
@@ -220,6 +248,8 @@
         alert('Login dulu');
         return;
       }
+
+      if (!confirm('Yakin ingin menghapus panel ini?')) return;
 
       try {
         const res = await fetch(API_URL + '/delete-panel', {
@@ -253,4 +283,4 @@
     };
   </script>
 </body>
-  </html
+</html>
