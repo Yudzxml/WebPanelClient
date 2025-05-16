@@ -6,167 +6,213 @@
   <title>RESELLER PANEL BY YUDZXML</title>
   <style>
     /* ===== Body & Typography ===== */
-    body {
-      background: #0a0a0f;
-      color: #d6f6ff;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      padding: 24px 16px;
-      margin: 0;
-      min-height: 100vh;
-    }
-    * { box-sizing: border-box; }
+body {
+  background: #0a0a0f;
+  color: #d6f6ff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 24px 16px;
+  margin: 0;
+  min-height: 100vh;
+}
+* { box-sizing: border-box; }
 
-    h1 {
-      text-align: center;
-      font-size: 2.4rem;
-      color: #00ccff;
-      text-shadow: 0 0 14px #00ccffaa;
-      margin-bottom: 32px;
-      font-weight: 700;
-    }
+h1 {
+  text-align: center;
+  font-size: 2.4rem;
+  color: #00ccff;
+  text-shadow: 0 0 14px #00ccffaa;
+  margin-bottom: 32px;
+  font-weight: 700;
+}
 
-    h3 {
-      color: #00ccff;
-      border-bottom: 2px solid #00ccff55;
-      padding-bottom: 8px;
-      margin-top: 28px;
-      margin-bottom: 20px;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      font-size: 1.2rem;
-    }
+h3 {
+  color: #00ccff;
+  border-bottom: 2px solid #00ccff55;
+  padding-bottom: 8px;
+  margin-top: 28px;
+  margin-bottom: 20px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  font-size: 1.2rem;
+}
 
-    /* ===== Inputs & Selects ===== */
-    input, select {
-      width: 100%; max-width: 320px;
-      padding: 12px 16px;
-      margin: 10px 0 20px;
-      border-radius: 10px;
-      border: none;
-      background: #111827;
-      color: #d6f6ff;
-      font-size: 1rem;
-      box-shadow: inset 0 0 8px #00ccff44;
-      transition: box-shadow 0.25s ease, outline-color 0.25s ease;
-      outline-offset: 2px;
-      outline-color: transparent;
-    }
-    input:focus, select:focus {
-      outline-color: #00ccffcc;
-      box-shadow: inset 0 0 10px #00ccffbb;
-    }
+/* ===== Inputs & Selects ===== */
+input, select {
+  width: 100%; max-width: 320px;
+  padding: 12px 16px;
+  margin: 10px 0 20px;
+  border-radius: 10px;
+  border: none;
+  background: #111827;
+  color: #d6f6ff;
+  font-size: 1rem;
+  box-shadow: inset 0 0 8px #00ccff44;
+  transition: box-shadow 0.25s ease, outline-color 0.25s ease;
+  outline-offset: 2px;
+  outline-color: transparent;
+}
+input:focus, select:focus {
+  outline-color: #00ccffcc;
+  box-shadow: inset 0 0 10px #00ccffbb;
+}
 
-    /* ===== Buttons ===== */
-    button {
-      cursor: pointer;
-      user-select: none;
-    }
-    .primary-btn {
-      width: 100%; max-width: 320px;
-      padding: 12px 0;
-      margin-top: 12px;
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: #000;
-      background: #00ccff;
-      border: none;
-      border-radius: 10px;
-      box-shadow: 0 0 16px #00ccffcc;
-      transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
-      text-align: center;
-    }
-    .primary-btn:hover:not(:disabled) {
-      background: #009fcc;
-      box-shadow: 0 0 24px #00e0ff;
-      transform: translateY(-2px);
-    }
-    .primary-btn:active:not(:disabled) {
-      transform: translateY(0);
-      box-shadow: 0 0 16px #00ccffcc;
-    }
-    .primary-btn:disabled {
-      background: #444; color: #999; cursor: not-allowed; box-shadow: none;
-    }
+/* ===== Buttons ===== */
+button {
+  cursor: pointer;
+  user-select: none;
+}
+.primary-btn {
+  width: 100%; max-width: 320px;
+  padding: 12px 0;
+  margin-top: 12px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #000;
+  background: #00ccff;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 0 16px #00ccffcc;
+  transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+  text-align: center;
+}
+.primary-btn:hover:not(:disabled) {
+  background: #009fcc;
+  box-shadow: 0 0 24px #00e0ff;
+  transform: translateY(-2px);
+}
+.primary-btn:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 0 16px #00ccffcc;
+}
+.primary-btn:disabled {
+  background: #444; color: #999; cursor: not-allowed; box-shadow: none;
+}
 
-    /* ===== Copy Buttons ===== */
-    .copy-btn {
-      background: none;
-      border: none;
-      margin-left: 8px;
-      cursor: pointer;
-      font-size: 0.9rem;
-      color: #00ccff;
-    }
-    .copy-btn:hover { text-decoration: underline; }
+/* ===== Copy Buttons ===== */
+.copy-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #00ccff;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+}
+.copy-btn:hover { 
+  text-decoration: underline; 
+  background-color: #003f55;
+}
 
-    /* ===== Boxes ===== */
-    #loginBox, #mainBox {
-      max-width: 340px;
-      margin: 0 auto 28px;
-      padding: 16px;
-      background: rgba(255,255,255,0.02);
-      border-radius: 14px;
-      box-shadow: 0 0 12px #00ccff33;
-    }
+/* ===== Boxes ===== */
+#loginBox, #mainBox {
+  max-width: 340px;
+  margin: 0 auto 28px;
+  padding: 16px;
+  background: rgba(255,255,255,0.02);
+  border-radius: 14px;
+  box-shadow: 0 0 12px #00ccff33;
+}
 
-    /* ===== Panels ===== */
-    #panels {
-      margin-top: 24px;
-      max-width: 780px;
-      margin-left: auto; margin-right: auto;
-      display: flex; flex-wrap: wrap;
-      gap: 20px; justify-content: center;
-    }
+/* ===== Panels ===== */
+#panels {
+  margin-top: 24px;
+  max-width: 780px;
+  margin-left: auto; margin-right: auto;
+  display: flex; flex-wrap: wrap;
+  gap: 20px; justify-content: center;
+}
 
-    .panel-box {
-      background: rgba(0,0,25,0.65);
-      border: 1.6px solid #00ccff66;
-      border-radius: 16px;
-      padding: 18px 20px;
-      width: 280px;
-      box-shadow: 0 0 16px #00ccff99;
-      backdrop-filter: blur(10px);
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-    .panel-box:hover {
-      transform: scale(1.04);
-      box-shadow: 0 0 26px #00e0ffee;
-    }
+.panel-box {
+  background: rgba(0,0,25,0.65);
+  border: 1.6px solid #00ccff66;
+  border-radius: 16px;
+  padding: 18px 20px;
+  width: 280px;
+  box-shadow: 0 0 16px #00ccff99;
+  backdrop-filter: blur(10px);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.panel-box:hover {
+  transform: scale(1.04);
+  box-shadow: 0 0 26px #00e0ffee;
+}
 
-    .panel-info {
-      margin-bottom: 10px;
-      font-size: 0.95rem;
-      line-height: 1.4;
-      word-break: break-word;
-    }
-    .panel-info b { display: inline-block; width: 100px; color: #00ccff; font-weight: 700; }
+.panel-info {
+  margin-bottom: 10px;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  word-break: break-word;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.panel-info b { 
+  display: inline-block; 
+  width: 100px; 
+  color: #00ccff; 
+  font-weight: 700; 
+}
 
-    .panel-actions {
-      margin-top: 16px;
-      display: flex;
-      gap: 8px;
-    }
-    .panel-actions .delete-btn {
-      flex: 1;
-      padding: 10px 0;
-      font-size: 1rem;
-      border-radius: 10px;
-      background: #ff3366;
-      color: white;
-      box-shadow: 0 0 12px #ff3366cc;
-      border: none;
-      font-weight: 700;
-      transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
-    }
-    .panel-actions .delete-btn:hover { background: #cc204f; box-shadow: 0 0 18px #ff5577ff; transform: translateY(-2px); }
-    .panel-actions .delete-btn:active { transform: translateY(0); box-shadow: 0 0 12px #ff3366cc; }
+.panel-actions {
+  margin-top: 16px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
 
-    @media (max-width: 768px) {
-      .panel-box { width: 90vw; padding: 22px 26px; }
-    }
+.panel-actions .delete-btn {
+  flex: 1;
+  padding: 10px 0;
+  font-size: 1rem;
+  border-radius: 10px;
+  background: #ff3366;
+  color: white;
+  box-shadow: 0 0 12px #ff3366cc;
+  border: none;
+  font-weight: 700;
+  transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+}
+.panel-actions .delete-btn:hover { 
+  background: #cc204f; 
+  box-shadow: 0 0 18px #ff5577ff; 
+  transform: translateY(-2px); 
+}
+.panel-actions .delete-btn:active { 
+  transform: translateY(0); 
+  box-shadow: 0 0 12px #ff3366cc; 
+}
+
+/* Untuk tombol copy di dalam .panel-actions */
+.panel-actions button.copy-btn {
+  flex: 0 0 auto;
+  padding: 8px 14px;
+  font-size: 0.9rem;
+  border-radius: 10px;
+  background: #0077cc;
+  color: white;
+  box-shadow: 0 0 12px #0077cccc;
+  border: none;
+  font-weight: 600;
+  transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+}
+.panel-actions button.copy-btn:hover {
+  background: #005fa3;
+  box-shadow: 0 0 20px #3399ffcc;
+  transform: translateY(-2px);
+}
+.panel-actions button.copy-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 0 12px #0077cccc;
+}
+
+@media (max-width: 768px) {
+  .panel-box { width: 90vw; padding: 22px 26px; }
+}
   </style>
 </head>
 <body>
@@ -252,36 +298,41 @@
       }
     }
 
-    function renderPanels(panels) {  
-  const container = document.getElementById('panels');  
-  container.innerHTML = '';  
-  
-  if (!Array.isArray(panels) || panels.length === 0) {  
-    container.innerHTML = '<i style="color:#888">No panels yet.</i>';  
-    return;  
-  }  
-  
-  panels.forEach(panel => {  
+    function renderPanels(panels) {
+  const container = document.getElementById('panels');
+  container.innerHTML = '';
+
+  if (!Array.isArray(panels) || panels.length === 0) {
+    container.innerHTML = '<i style="color:#888">No panels yet.</i>';
+    return;
+  }
+
+  panels.forEach(panel => {
     const loginUrl = panel.loginUrl || 'https://private-server.yudzxsnayders.x-vvip.cloud/';
+    const encoded = encodeURIComponent(JSON.stringify(panel));
     
-    const div = document.createElement('div');  
-    div.className = 'panel-box';  
-      
-    const encoded = encodeURIComponent(JSON.stringify(panel));  
-    div.innerHTML = `  
-      <div class="panel-info"><b>Server ID:</b> ${panel.serverId || 'N/A'}</div>  
-      <div class="panel-info"><b>User ID:</b> ${panel.userId || 'N/A'}</div>  
-      <div class="panel-info"><b>Login URL:</b> ${loginUrl} <button onclick="copyToClipboard('${loginUrl}')">Copy</button></div>
-      <div class="panel-info"><b>Username:</b> ${panel.username || 'N/A'} <button onclick="copyToClipboard('${panel.username || ''}')">Copy</button></div>  
-      <div class="panel-info"><b>Password:</b> ${panel.password || '****'} <button onclick="copyToClipboard('${panel.password || ''}')">Copy</button></div>  
-      <div class="panel-info"><b>RAM:</b> ${panel.ram || 'Unknown'}</div>  
-      <div class="panel-info"><b>Created:</b> ${panel.createdAt ? new Date(panel.createdAt).toLocaleString() : 'N/A'}</div>  
-      <div class="panel-actions">  
-        <button onclick="deletePanel(decodeURIComponent('${encoded}'))">Delete</button>  
-      </div>  
-    `;  
-    container.appendChild(div);  
-  });  
+    const div = document.createElement('div');
+    div.className = 'panel-box';
+
+    div.innerHTML = `
+      <div class="panel-info"><b>Server ID:</b> ${panel.serverId || 'N/A'}</div>
+      <div class="panel-info"><b>User ID:</b> ${panel.userId || 'N/A'}</div>
+      <div class="panel-info"><b>Login URL:</b> ${loginUrl}</div>
+      <div class="panel-info"><b>Username:</b> ${panel.username || 'N/A'}</div>
+      <div class="panel-info"><b>Password:</b> ${panel.password || '****'}</div>
+      <div class="panel-info"><b>RAM:</b> ${panel.ram || 'Unknown'}</div>
+      <div class="panel-info"><b>Created:</b> ${panel.createdAt ? new Date(panel.createdAt).toLocaleString() : 'N/A'}</div>
+
+      <div class="panel-actions">
+        <button class="copy-btn" onclick="copyToClipboard('${loginUrl}')">Copy URL</button>
+        <button class="copy-btn" onclick="copyToClipboard('${panel.username || ''}')">Copy Username</button>
+        <button class="copy-btn" onclick="copyToClipboard('${panel.password || ''}')">Copy Password</button>
+        <button class="delete-btn" onclick="deletePanel(decodeURIComponent('${encoded}'))">Delete</button>
+      </div>
+    `;
+
+    container.appendChild(div);
+  });
 }
 
 function copyToClipboard(text) {  
