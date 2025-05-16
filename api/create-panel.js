@@ -8,44 +8,29 @@ module.exports = async (req, res) => {
 
   try {
     const body = await parseBody(req);
-    const { username, password, panelData } = body;
+    const { github, panelData } = body;
 
     if (
-      !username ||
-      !password ||
+      !github?.username ||
+      !github?.password ||
       !panelData ||
       typeof panelData !== "object" ||
       Array.isArray(panelData)
     ) {
-      return res
-        .status(400)
-        .json({ message: "Missing or invalid required fields" });
+      return res.status(400).json({ message: "Missing or invalid required fields" });
     }
 
-    // Siapkan parameter POST ke API eksternal
-    const filteredPanelData = {};
-    for (const key in panelData) {
-      if (key !== "username" && key !== "password") {
-        filteredPanelData[key] = panelData[key];
+    // Kirim hanya panelData ke API eksternal
+    console.log("Sending JSON to external API:", panelData);
+
+    const apiRes = await axios.post(
+      "https://api-yudzxzy.x-server.my.id/api/panelHandler/create-panel",
+      panelData,
+      {
+        headers: { "Content-Type": "application/json" },
+        validateStatus: () => true,
       }
-    }
-
-    const requestData = {
-  ...filteredPanelData,
-  username,
-  password
-};
-
-console.log("Sending JSON to external API:", requestData);
-
-const apiRes = await axios.post(
-  "https://api-yudzxzy.x-server.my.id/api/panelHandler/create-panel",
-  requestData,
-  {
-    headers: { "Content-Type": "application/json" },
-    validateStatus: () => true,
-  }
-);
+    );
 
     if (apiRes.status !== 200) {
       console.error("External API error response:", apiRes.data);
@@ -55,17 +40,19 @@ const apiRes = await axios.post(
     }
 
     const createdPanel = {
-  ...apiRes.data,
-  username: panelData.username,
-  email: panelData.email || `${panelData.username}@gmail.com`,
-  password: panelData.password || password,
-};
+      ...apiRes.data,
+      username: panelData.username,
+      email: panelData.email || `${panelData.username}@gmail.com`,
+      password: panelData.password,
+    };
 
-    await updateGithubPanel(username, password, createdPanel, "add");
+    // Simpan ke GitHub
+    await updateGithubPanel(github.username, github.password, createdPanel, "add");
 
     return res
       .status(200)
       .json({ message: "Panel created and saved", panel: createdPanel });
+
   } catch (err) {
     console.error("Create panel error:", err);
     return res.status(500).json({ message: "Create failed", error: err.message });
