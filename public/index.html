@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Panel Manager</title>
+  <title>RESELLER PANEL BY YUDZXML</title>
   <style>
     /* ===== Body & Typography ===== */
 body {
@@ -215,11 +215,11 @@ button:disabled {
     <h3>LOGIN ACCOUNT</h3>
     <input type="text" id="username" placeholder="Your email (e.g. yudzxml@gmail.com)" autocomplete="username" />
     <input type="password" id="password" placeholder="Your password" autocomplete="current-password" />
-    <button id="loginBtn" onclick="login()">Login</button>
+    <button id="loginBtn" onclick="login()">LOGIN</button>
   </div>
 
   <div id="mainBox" style="display:none">
-    <h3>Create Panel</h3>
+    <h3>CREATE PANEL</h3>
     <input type="text" id="cuser" placeholder="Panel Username" />
     <input type="password" id="cpass" placeholder="Panel Password" />
     <select id="ram" aria-label="Select RAM size">
@@ -235,10 +235,10 @@ button:disabled {
       <option value="10gb">RAM 10 GB</option>
       <option value="unli">RAM UNLIMITED</option>      
     </select>
-    <button id="createBtn" onclick="createPanel()">Create Panel</button>
+    <button id="createBtn" onclick="createPanel()">CREATE PANEL</button>
 
-    <h3>Your Panels</h3>
-    <div id="panels"><i>Loading panels...</i></div>
+    <h3>PANEL DETAIL</h3>
+    <div id="panels"><i>Memuat Panels...</i></div>
   </div>
 
   <script>
@@ -365,50 +365,57 @@ button:disabled {
 }
 
     async function createPanel() {
-      const btn = document.getElementById('createBtn');
-      btn.disabled = true;
+  const btn = document.getElementById('createBtn');
+  btn.disabled = true;
 
-      const user = getUserFromCookie();
-      if (!user) {
-        alert('Please login first.');
-        btn.disabled = false;
-        return;
-      }
+  const user = getUserFromCookie();
+  if (!user) {
+    alert('Please login first.');
+    btn.disabled = false;
+    return;
+  }
 
-      const cuser = document.getElementById('cuser').value.trim();
-      const cpass = document.getElementById('cpass').value.trim();
-      const ram = document.getElementById('ram').value;
+  const cuser = document.getElementById('cuser').value.trim();
+  const cpass = document.getElementById('cpass').value.trim();
+  const ram = document.getElementById('ram').value;
 
-      if (!cuser || !cpass) {
-        alert('Please fill in panel username and password.');
-        btn.disabled = false;
-        return;
-      }
+  if (!cuser || !cpass) {
+    alert('Please fill in panel username and password.');
+    btn.disabled = false;
+    return;
+  }
 
-      try {
-        const res = await fetch(API_URL + '/create-panel', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          credentials: 'include',
-          body: JSON.stringify({
-            username: user.username,
-            password: user.password,
-            panelData: { username: cuser, password: cpass, ram }
-          }),
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.message || 'Failed to create panel.');
+  try {
+    const res = await fetch(API_URL + '/create-panel', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({
+        github: {
+          username: user.username,
+          password: user.password
+        },
+        panelData: {
+          username: cuser,
+          password: cpass,
+          ram: ram
+        }
+      }),
+    });
 
-        alert('Panel created!');
-        document.getElementById('cuser').value = '';
-        document.getElementById('cpass').value = '';
-        loadPanels();
-      } catch (e) {
-        alert(e.message);
-      } finally {
-        btn.disabled = false;
-      }
-    }
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Failed to create panel.');
+
+    alert('Panel created!');
+    document.getElementById('cuser').value = '';
+    document.getElementById('cpass').value = '';
+    loadPanels();
+  } catch (e) {
+    alert(e.message);
+  } finally {
+    btn.disabled = false;
+  }
+}
 
     async function deletePanel(panelStr) {
   const user = getUserFromCookie();
