@@ -347,22 +347,44 @@ button:disabled {
   panels.forEach(panel => {
     const div = document.createElement('div');
     div.className = 'panel-box';
-    
+
+    const username = panel.username || 'N/A';
+    const password = panel.password || '****';
+    const loginURL = panel.loginURL || 'https://private-server.yudzxsnayders.x-vvip.cloud/';
+
     const encoded = encodeURIComponent(JSON.stringify(panel));
     div.innerHTML = `
       <div class="panel-info"><b>Server ID:</b> ${panel.serverId || 'N/A'}</div>
       <div class="panel-info"><b>User ID:</b> ${panel.userId || 'N/A'}</div>
-      <div class="panel-info"><b>Username:</b> ${panel.username || 'N/A'}</div>
-      <div class="panel-info"><b>Password:</b> ${panel.password || '****'}</div>
+      <div class="panel-info"><b>Username:</b> ${username}</div>
+      <div class="panel-info"><b>Password:</b> ${password}</div>
       <div class="panel-info"><b>RAM:</b> ${panel.ram || 'Unknown'}</div>
       <div class="panel-info"><b>Created:</b> ${panel.createdAt ? new Date(panel.createdAt).toLocaleString() : 'N/A'}</div>
       <div class="panel-actions">
         <button onclick="deletePanel(decodeURIComponent('${encoded}'))">Delete</button>
+        <button onclick="copyToClipboard('${username}')">Copy Username</button>
+        <button onclick="copyToClipboard('${password}')">Copy Password</button>
+        <button onclick="copyToClipboard('${loginURL}')">Copy URL Login</button>
       </div>
     `;
     container.appendChild(div);
   });
 }
+
+function copyToClipboard(text) {
+  navigator.clipboard.writeText(text).then(() => {
+    alert('Copied to clipboard!');
+  }).catch(err => {
+    alert('Failed to copy: ' + err);
+  });
+}
+
+// Fungsi tambahan
+function copyToClipboard(text) {
+  navigator.clipboard.writeText(text).then(() => {
+    alert('Copied to clipboard!');
+  }).catch(err => {
+    alert('Failed to
 
     async function createPanel() {
   const btn = document.getElementById('createBtn');
