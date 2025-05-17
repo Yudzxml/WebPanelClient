@@ -97,6 +97,24 @@ h3 { color: #00ccff; border-bottom: 2px solid #00ccff55; padding-bottom: 8px; ma
   box-shadow: 0 0 12px #ff3366cc;
 }
 
+#logoutBtn {
+  display: none;
+  padding: 6px 12px;
+  font-size: 14px;
+  border-radius: 8px;
+  background-color: #ff3c3c;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 0 10px #ff3c3c;
+}
+
+#logoutBtn:hover {
+  background-color: #e62e2e;
+  box-shadow: 0 0 12px #ff5c5c;
+}
+
 @media (max-width: 768px) { .panel-box { width: 90vw; padding: 22px 26px; } } 
 </style>
 
@@ -128,7 +146,9 @@ h3 { color: #00ccff; border-bottom: 2px solid #00ccff55; padding-bottom: 8px; ma
     <button id="createBtn" class="primary-btn" onclick="createPanel()">CREATE PANEL</button><h3>PANEL DETAIL</h3>
 <div id="panels"><i>Memuat Panels...</i></div>
 
-  </div>  <script>
+  </div>  
+<button id="logoutBtn" onclick="logout()" class="primary-btn" style="margin-bottom: 20px;">LOGOUT</button>
+  <script>
     const API_URL = '/api';
 
     function copyToClipboard(text) {
@@ -169,7 +189,7 @@ h3 { color: #00ccff; border-bottom: 2px solid #00ccff55; padding-bottom: 8px; ma
   const p = document.getElementById('password').value.trim();
 
   if (!u || !p) {
-    alert('Fill in both fields.');
+    alert('Harap Isi Username Dan Password');
     btn.disabled = false;
     return;
   }
@@ -183,6 +203,7 @@ h3 { color: #00ccff; border-bottom: 2px solid #00ccff55; padding-bottom: 8px; ma
     setCookie('user', JSON.stringify({ username: u, password: p }), 7);
     document.getElementById('loginBox').style.display = 'none';
     document.getElementById('mainBox').style.display = 'block';
+    document.getElementById('logoutBtn').style.display = 'block';
     loadPanels();
 
   } catch (e) {
@@ -190,6 +211,14 @@ h3 { color: #00ccff; border-bottom: 2px solid #00ccff55; padding-bottom: 8px; ma
   } finally {
     btn.disabled = false;
   }
+}
+    
+    function logout() {
+  document.cookie = "user=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+  document.getElementById('loginBox').style.display = 'block';
+  document.getElementById('mainBox').style.display = 'none';
+  document.getElementById('logoutBtn').style.display = 'none'; // Sembunyikan tombol logout
+  alert('Berhasil Logout');
 }
 
     async function loadPanels() {
