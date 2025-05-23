@@ -1,40 +1,56 @@
 <!doctype html>
-<html lang=en>
+<html lang="en">
 <head>
-<meta charset=UTF-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<link rel=stylesheet href=Yudzxml-Styles.css>
-<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css>
-<title>RESELLER PANEL BY YUDZXML</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="Yudzxml-Styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <title>RESELLER PANEL BY YUDZXML</title>
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8P0DGX524F"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-8P0DGX524F');
+  </script>
 </head>
-<div id="customAlert"></div>
 <body>
-<h1>RESELLER PANEL</h1> <div id=loginBox>
-<h3>LOGIN ACCOUNT</h3>
-<input id=username placeholder="Your email (e.g. yudzxml@gmail.com)" autocomplete=username>
-<input type=password id=password placeholder="Your password" autocomplete=current-password>
-<button id=loginBtn class=primary-btn onclick=login()>LOGIN</button>
-</div> <div id=mainBox style=display:none>
-<h3>CREATE PANEL</h3>
-<input id=cuser placeholder="Panel Username">
-<input type=password id=cpass placeholder="Panel Password">
-<select id=ram aria-label="Select RAM size">
-<option value=1gb>RAM 1 GB ( BY YUDZXML )</option>
-<option value=2gb>RAM 2 GB ( BY YUDZXML )</option>
-<option value=3gb>RAM 3 GB ( BY YUDZXML )</option>
-<option value=4gb>RAM 4 GB ( BY YUDZXML )</option>
-<option value=5gb>RAM 5 GB ( BY YUDZXML )</option>
-<option value=6gb>RAM 6 GB ( BY YUDZXML )</option>
-<option value=7gb>RAM 7 GB ( BY YUDZXML )</option>
-<option value=8gb>RAM 8 GB ( BY YUDZXML )</option>
-<option value=9gb>RAM 9 GB ( BY YUDZXML )</option>
-<option value=10gb>RAM 10 GB ( BY YUDZXML )</option>
-<option value=unli>RAM UNLIMITED ( BY YUDZXML )</option>
-</select>
-<button id=createBtn class=primary-btn onclick=createPanel()>CREATE PANEL</button><h3>PANEL DETAIL</h3>
-<div id=panels><i>Memuat Panels...</i></div>
-<button id="logoutBtn" onclick="logout()" class="primary-btn" style="margin-bottom: 20px;">LOGOUT</button>
-</div>
-<script src=Yudzxml-Script.js></script>
+
+  <div id="customAlert"></div>
+
+  <h1>RESELLER PANEL</h1>
+  <div id="loginBox">
+    <h3>LOGIN ACCOUNT</h3>
+    <input id="username" placeholder="Your email (e.g. yudzxml@gmail.com)" autocomplete="username">
+    <input type="password" id="password" placeholder="Your password" autocomplete="current-password">
+    <button id="loginBtn" class="primary-btn" onclick="login()">LOGIN</button>
+  </div>
+
+  <div id="mainBox" style="display:none">
+    <h3>CREATE PANEL</h3>
+    <input id="cuser" placeholder="Panel Username">
+    <input type="password" id="cpass" placeholder="Panel Password">
+    <select id="ram" aria-label="Select RAM size">
+      <option value="1gb">RAM 1 GB (BY YUDZXML)</option>
+      <option value="2gb">RAM 2 GB (BY YUDZXML)</option>
+      <option value="3gb">RAM 3 GB (BY YUDZXML)</option>
+      <option value="4gb">RAM 4 GB (BY YUDZXML)</option>
+      <option value="5gb">RAM 5 GB (BY YUDZXML)</option>
+      <option value="6gb">RAM 6 GB (BY YUDZXML)</option>
+      <option value="7gb">RAM 7 GB (BY YUDZXML)</option>
+      <option value="8gb">RAM 8 GB (BY YUDZXML)</option>
+      <option value="9gb">RAM 9 GB (BY YUDZXML)</option>
+      <option value="10gb">RAM 10 GB (BY YUDZXML)</option>
+      <option value="unli">RAM UNLIMITED (BY YUDZXML)</option>
+    </select>
+    <button id="createBtn" class="primary-btn" onclick="createPanel()">CREATE PANEL</button>
+    <h3>PANEL DETAIL</h3>
+    <div id="panels"><i>Memuat Panels...</i></div>
+    <button id="logoutBtn" onclick="logout()" class="primary-btn" style="margin-bottom: 20px;">LOGOUT</button>
+  </div>
+
+  <script src="Yudzxml-Script.js"></script>
 </body>
 </html>
