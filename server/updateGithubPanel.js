@@ -34,17 +34,25 @@ async function updateGithubPanel(username, password, panelData = {}, action = "a
         throw new Error(`User "${username}" not found.`);
       }
     } else {
-      // Inisialisasi user jika belum ada
+      // ADD/UPDATE USER
+      const expiredAt = typeof panelData === "number" ? panelData : null;
+
       if (!contentJson[username]) {
         contentJson[username] = {
           UserPassword: password,
+          expiredAt: expiredAt,
           ListPanel: [],
         };
       }
 
-      // Update password jika berbeda
+      // Update password jika berubah
       if (contentJson[username].UserPassword !== password) {
         contentJson[username].UserPassword = password;
+      }
+
+      // Update expiredAt jika diberikan dan valid
+      if (expiredAt) {
+        contentJson[username].expiredAt = expiredAt;
       }
 
       // Pastikan ListPanel adalah array
@@ -52,6 +60,7 @@ async function updateGithubPanel(username, password, panelData = {}, action = "a
         contentJson[username].ListPanel = [];
       }
 
+      // Jika action add/remove panel
       if (action === "add") {
         const exists = contentJson[username].ListPanel.some(
           (panel) => String(panel.serverId) === String(panelData.serverId)
