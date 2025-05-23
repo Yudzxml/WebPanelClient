@@ -70,6 +70,49 @@
       display: block;
       margin-bottom: 6px;
     }
+/* Alert container */
+#customAlert {
+  position: fixed;
+  top: 20px;
+  right: 40px; /* dikurangi supaya gak terlalu ke pinggir */
+  width: fit-content;
+  max-width: 90vw;
+  padding: 12px 16px;
+  border-radius: 12px;
+  color: #fff;
+  font-weight: 600;
+  font-size: 1rem;
+  box-shadow: 0 4px 20px #00ccffcc; /* titik koma ditambahkan */
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-20px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 9999;
+  word-break: break-word;
+}
+
+#customAlert.show {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+/* Types */
+#customAlert.success {
+  background-color: #00ccff;
+  box-shadow: 0 0 12px #00ccffcc;
+}
+
+#customAlert.error {
+  background-color: #ff3366;
+  box-shadow: 0 0 12px #ff3366cc;
+}
+
+#customAlert.info {
+  background-color: #0077cc;
+  box-shadow: 0 0 12px #0077cccc;
+}
+
     #userList {
       margin-top: 24px;
       padding: 16px;
@@ -90,6 +133,7 @@
     }
   </style>
 </head>
+<div id="customAlert"></div>
 <body>
   <h1>OWNER PANEL</h1>
 
@@ -104,6 +148,7 @@
     <h3 style="color:#00ccff;">ADD USER ACCESS</h3>
     <input type="text" id="newUsername" placeholder="New Username" />
     <input type="password" id="newPassword" placeholder="New Password" />
+    <input type="number" id="activeDays" placeholder="Masa Aktif (hari)" />
     <button onclick="addUser()">Add Access</button>
 
     <h3 style="margin-top: 40px; color:#00ccff;">DELETE USER ACCESS</h3>
@@ -146,12 +191,12 @@
       const pass = document.getElementById('password').value.trim();
 
       if (email !== 'yudzxml@gmail.com') {
-        alert('Access denied: Only Yudzxml');
+        showAlert('Access denied: Only Yudzxml');
         return;
       }
 
       if (!pass) {
-        alert('Password is required.');
+        showAlert('Password is required.');
         return;
       }
 
@@ -159,7 +204,7 @@
         setCookie('ownerLoggedIn', 'true', 1); // simpan cookie selama 1 hari
         showMainPanel();
       } else {
-        alert('Wrong password!');
+        showAlert('Wrong password!');
       }
     }
 
@@ -181,37 +226,41 @@
     }
 
     async function addUser() {
-      const username = document.getElementById('newUsername').value.trim();
-      const password = document.getElementById('newPassword').value.trim();
+  const username = document.getElementById('newUsername').value.trim();
+  const password = document.getElementById('newPassword').value.trim();
+  const activeDays = parseInt(document.getElementById('activeDays').value.trim());
 
-      if (!username || !password) {
-        alert('Fill in all fields!');
-        return;
-      }
+  if (!username || !password || isNaN(activeDays) || activeDays <= 0) {
+    showAlert('Isi semua field dengan benar!');
+    return;
+  }
 
-      try {
-        const res = await fetch('/api/addUser', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username, password })
-        });
+  const expiredAt = Date.now() + activeDays * 24 * 60 * 60 * 1000;
 
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.message || 'Failed to add user');
+  try {
+    const res = await fetch('/api/addUser', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password, expiredAt })
+    });
 
-        alert('User added successfully!');
-        document.getElementById('newUsername').value = '';
-        document.getElementById('newPassword').value = '';
-      } catch (err) {
-        alert(err.message);
-      }
-    }
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Gagal menambahkan user');
+
+    showAlert('User berhasil ditambahkan!');
+    document.getElementById('newUsername').value = '';
+    document.getElementById('newPassword').value = '';
+    document.getElementById('activeDays').value = '';
+  } catch (err) {
+    showAlert(err.message);
+  }
+}
 
     async function deleteUser() {
       const username = document.getElementById('deleteUsername').value.trim();
 
       if (!username) {
-        alert('Please enter the username to delete.');
+        showAlert('Please enter the username to delete.');
         return;
       }
 
@@ -229,11 +278,11 @@
         const data = await res.json();
         if (!res.ok) throw new Error(data.message || 'Failed to delete user');
 
-        alert('User deleted successfully!');
+        showAlert('User deleted successfully!');
         document.getElementById('deleteUsername').value = '';
         loadUsers(); // refresh list
       } catch (err) {
-        alert(err.message);
+        showAlert(err.message);
       }
     }
 
@@ -259,10 +308,21 @@
           container.appendChild(div);
         });
       } catch (err) {
-        alert(err.message);
+        showAlert(err.message);
       }
     }
-
+    
+    function showAlert(message, type = 'info', duration = 3500) {
+  const alertBox = document.getElementById('customAlert');
+  alertBox.textContent = message;
+  alertBox.classList.remove('success', 'error', 'info', 'show');
+  alertBox.classList.add(type, 'show');
+  if (alertBox.timeoutId) clearTimeout(alertBox.timeoutId);
+  alertBox.timeoutId = setTimeout(() => {
+    alertBox.classList.remove('show');
+  }, duration);
+}
+    
     window.onload = () => {
       checkLoginStatus();
     };
