@@ -7,13 +7,15 @@ module.exports = async (req, res) => {
 
   try {
     const body = await parseBody(req);
-    const { username, password } = body;
+    const { username, password, activeDays } = body;
 
-    if (!username || !password) {
-      return res.status(400).json({ message: "Missing username or password" });
+    if (!username || !password || !activeDays || isNaN(activeDays) || activeDays <= 0) {
+      return res.status(400).json({ message: "Missing or invalid fields" });
     }
 
-    await updateGithubPanel(username, password, null, "addUser");
+    const expiredAt = Date.now() + activeDays * 86400000;
+
+    await updateGithubPanel(username, password, expiredAt, "addUser");
 
     return res.status(200).json({ message: "User successfully added", user: username });
   } catch (err) {

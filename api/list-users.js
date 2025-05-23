@@ -26,6 +26,7 @@ module.exports = async (req, res) => {
     const users = Object.entries(contentJson).map(([username, data]) => ({
       username,
       password: data.UserPassword || null,
+      expiredAt: data.expiredAt || null,
       totalPanel: Array.isArray(data.ListPanel) ? data.ListPanel.length : 0,
     }));
 
