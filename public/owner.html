@@ -154,6 +154,11 @@
     <h3 style="margin-top: 40px; color:#00ccff;">DELETE USER ACCESS</h3>
     <input type="text" id="deleteUsername" placeholder="Username to Delete" />
     <button onclick="deleteUser()">Delete Access</button>
+    <h3 style="margin-top: 40px; color:#00ccff;">UPDATE USER</h3>
+<input type="text" id="editUsername" placeholder="Email / Username" />
+<input type="password" id="editPassword" placeholder="New Password ( Opsional )" />
+<input type="number" id="changeDays" placeholder="Masa Aktif ( Contoh +7 atau -7 )" />
+<button onclick="updateUser()">Update User</button>
 
     <h3 style="margin-top: 40px; color:#00ccff;">VIEW ALL USERS</h3>
     <button onclick="loadUsers()">Load All Users</button>
@@ -285,6 +290,45 @@
         showAlert(err.message);
       }
     }
+    async function updateUser() {
+  const username = document.getElementById('editUsername').value.trim();
+  const password = document.getElementById('editPassword').value.trim();
+  const changeDays = parseInt(document.getElementById('changeDays').value.trim());
+
+  if (!username) {
+    showAlert('Username harus diisi!', 'error');
+    return;
+  }
+
+  const payload = { username };
+
+  if (password) {
+    payload.password = password;
+  }
+
+  if (!isNaN(changeDays)) {
+    payload.changeDays = changeDays;
+  }
+
+  try {
+    const res = await fetch('/api/update-user', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Gagal update user');
+
+    showAlert('User berhasil diupdate!', 'success');
+    document.getElementById('editUsername').value = '';
+    document.getElementById('editPassword').value = '';
+    document.getElementById('changeDays').value = '';
+    loadUsers(); // Refresh daftar user
+  } catch (err) {
+    showAlert(err.message, 'error');
+  }
+}
 
     async function loadUsers() {
       try {
