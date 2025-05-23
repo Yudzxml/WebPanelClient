@@ -33,6 +33,22 @@ async function updateGithubPanel(username, password, panelData = {}, action = "a
       } else {
         throw new Error(`User "${username}" not found.`);
       }
+} else if (action === "updateUser") {
+  const changeDays = panelData; // dalam hari
+  const user = contentJson[username];
+  if (!user) throw new Error(`User "${username}" not found.`);
+
+  if (password) user.UserPassword = password;
+
+  if (typeof changeDays === "number") {
+    const currentExpiredAt = user.expiredAt || Date.now();
+    const updatedExpiredAt = currentExpiredAt + changeDays * 86400000;
+    user.expiredAt = Math.max(updatedExpiredAt, Date.now()); // jangan biarkan expiredAt di masa lalu
+  }
+
+  if (!Array.isArray(user.ListPanel)) {
+    user.ListPanel = [];
+  }
     } else {
       // ADD/UPDATE USER
       const expiredAt = typeof panelData === "number" ? panelData : null;
