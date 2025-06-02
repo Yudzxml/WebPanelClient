@@ -24,7 +24,7 @@ module.exports = async (req, res) => {
     console.log("Sending JSON to external API:", panelData);
 
     const apiRes = await axios.post(
-      "https://api-yudzxzy.x-server.my.id/api/panelHandler/create-panel",
+      "https://api-yudzxml.koyeb.app/api/panelHandler/create-panel",
       panelData,
       {
         headers: { "Content-Type": "application/json" },

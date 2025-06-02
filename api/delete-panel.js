@@ -17,7 +17,7 @@ module.exports = async (req, res) => {
     const params = new URLSearchParams({ userId, serverId });
 
     const apiRes = await axios.post(
-      "https://api-yudzxzy.x-server.my.id/api/panelHandler/delete-panel",
+      "https://api-yudzxml.koyeb.app/api/panelHandler/delete-panel",
       params.toString(),
       {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
