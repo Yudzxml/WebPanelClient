@@ -34,21 +34,27 @@ async function updateGithubPanel(username, password, panelData = {}, action = "a
         throw new Error(`User "${username}" not found.`);
       }
 } else if (action === "updateUser") {
-  const changeDays = panelData; // dalam hari
+  const changeDays = panelData;
   const user = contentJson[username];
   if (!user) throw new Error(`User "${username}" not found.`);
 
   if (password) user.UserPassword = password;
 
   if (typeof changeDays === "number") {
-    const currentExpiredAt = user.expiredAt || Date.now();
-    const updatedExpiredAt = currentExpiredAt + changeDays * 86400000;
-    user.expiredAt = Math.max(updatedExpiredAt, Date.now()); // jangan biarkan expiredAt di masa lalu
+    const baseTime = (!user.expiredAt || user.expiredAt < Date.now())
+      ? Date.now()
+      : user.expiredAt;
+
+    const updatedExpiredAt = baseTime + changeDays * 86400000;
+    user.expiredAt = updatedExpiredAt;
   }
+
+  user.updatedAt = Date.now();
 
   if (!Array.isArray(user.ListPanel)) {
     user.ListPanel = [];
   }
+
     } else {
       // ADD/UPDATE USER
       const expiredAt = typeof panelData === "number" ? panelData : null;
