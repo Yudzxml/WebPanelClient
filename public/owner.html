@@ -70,47 +70,58 @@
       display: block;
       margin-bottom: 6px;
     }
-/* Alert container */
 #customAlert {
   position: fixed;
-  top: 20px;
-  right: 40px; /* dikurangi supaya gak terlalu ke pinggir */
-  width: fit-content;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.95);
+  min-width: 280px;
   max-width: 90vw;
-  padding: 12px 16px;
+  background-color: #00cc66; /* default: success */
+  padding: 20px 24px;
   border-radius: 12px;
   color: #fff;
   font-weight: 600;
   font-size: 1rem;
-  box-shadow: 0 4px 20px #00ccffcc; /* titik koma ditambahkan */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   opacity: 0;
   pointer-events: none;
-  transform: translateY(-20px);
-  transition: opacity 0.3s ease, transform 0.3s ease;
   z-index: 9999;
-  word-break: break-word;
+  text-align: center;
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
 }
 
 #customAlert.show {
   opacity: 1;
   pointer-events: auto;
-  transform: translateY(0);
+  transform: translate(-50%, -50%) scale(1);
 }
 
-/* Types */
+/* Warna berdasarkan tipe alert */
 #customAlert.success {
-  background-color: #00ccff;
-  box-shadow: 0 0 12px #00ccffcc;
+  background-color: #00cc66;
 }
-
 #customAlert.error {
   background-color: #ff3366;
-  box-shadow: 0 0 12px #ff3366cc;
 }
-
 #customAlert.info {
   background-color: #0077cc;
-  box-shadow: 0 0 12px #0077cccc;
+}
+#customAlert button {
+  margin-top: 14px;
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  padding: 8px 16px;
+  color: white;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+#customAlert button:hover {
+  background: rgba(255, 255, 255, 0.25);
 }
 
     #userList {
@@ -133,7 +144,10 @@
     }
   </style>
 </head>
-<div id="customAlert"></div>
+<div id="customAlert">
+  <div id="customAlertText">Pesan alert muncul di sini</div>
+  <button onclick="hideAlert()">OK</button>
+</div>
 <body>
   <h1>OWNER PANEL</h1>
 
@@ -168,7 +182,6 @@
   </div>
 
   <script>
-    // Cookie helpers
     function setCookie(name, value, days = 1) {
       const d = new Date();
       d.setTime(d.getTime() + days * 24 * 60 * 60 * 1000);
@@ -196,20 +209,20 @@
       const pass = document.getElementById('password').value.trim();
 
       if (email !== 'yudzxml@gmail.com') {
-        showAlert('Access denied: Only Yudzxml');
+        showAlert('Access denied: Only Yudzxml', 'info');
         return;
       }
 
       if (!pass) {
-        showAlert('Password is required.');
+        showAlert('Password is required.', 'info');
         return;
       }
 
       if (pass === '@Yudzxml1122') {
-        setCookie('ownerLoggedIn', 'true', 1); // simpan cookie selama 1 hari
+        setCookie('ownerLoggedIn', 'true', 1);
         showMainPanel();
       } else {
-        showAlert('Wrong password!');
+        showAlert('Wrong password!', 'info');
       }
     }
 
@@ -236,7 +249,7 @@
   const activeDays = parseInt(document.getElementById('activeDays').value.trim());
 
   if (!username || !password || isNaN(activeDays) || activeDays <= 0) {
-    showAlert('Isi semua field dengan benar!');
+    showAlert('Isi semua field dengan benar!', 'info');
     return;
   }
 
@@ -252,12 +265,12 @@
     const data = await res.json();
     if (!res.ok) throw new Error(data.message || 'Gagal menambahkan user');
 
-    showAlert('User berhasil ditambahkan!');
+    showAlert('User berhasil ditambahkan!', 'success');
     document.getElementById('newUsername').value = '';
     document.getElementById('newPassword').value = '';
     document.getElementById('activeDays').value = '';
   } catch (err) {
-    showAlert(err.message);
+    showAlert(err.message, 'error');
   }
 }
 
@@ -265,7 +278,7 @@
       const username = document.getElementById('deleteUsername').value.trim();
 
       if (!username) {
-        showAlert('Please enter the username to delete.');
+        showAlert('Please enter the username to delete.', 'info');
         return;
       }
 
@@ -283,11 +296,11 @@
         const data = await res.json();
         if (!res.ok) throw new Error(data.message || 'Failed to delete user');
 
-        showAlert('User deleted successfully!');
+        showAlert('User deleted successfully!', 'success');
         document.getElementById('deleteUsername').value = '';
-        loadUsers(); // refresh list
+        loadUsers();
       } catch (err) {
-        showAlert(err.message);
+        showAlert(err.message, 'error');
       }
     }
     async function updateUser() {
@@ -296,7 +309,7 @@
   const changeDays = parseInt(document.getElementById('changeDays').value.trim());
 
   if (!username) {
-    showAlert('Username harus diisi!', 'error');
+    showAlert('Username harus diisi!', 'info');
     return;
   }
 
@@ -324,7 +337,7 @@
     document.getElementById('editUsername').value = '';
     document.getElementById('editPassword').value = '';
     document.getElementById('changeDays').value = '';
-    loadUsers(); // Refresh daftar user
+    loadUsers();
   } catch (err) {
     showAlert(err.message, 'error');
   }
@@ -352,19 +365,23 @@
           container.appendChild(div);
         });
       } catch (err) {
-        showAlert(err.message);
+        showAlert(err.message, 'error');
       }
     }
     
-    function showAlert(message, type = 'info', duration = 3500) {
+function showAlert(message, type = 'success') {
   const alertBox = document.getElementById('customAlert');
-  alertBox.textContent = message;
-  alertBox.classList.remove('success', 'error', 'info', 'show');
-  alertBox.classList.add(type, 'show');
-  if (alertBox.timeoutId) clearTimeout(alertBox.timeoutId);
-  alertBox.timeoutId = setTimeout(() => {
-    alertBox.classList.remove('show');
-  }, duration);
+  const alertText = document.getElementById('customAlertText');
+  alertBox.className = '';
+  alertBox.classList.add('show', type);
+  alertText.innerText = message;
+  clearTimeout(alertBox.timer);
+  alertBox.timer = setTimeout(hideAlert, 5000);
+}
+
+function hideAlert() {
+  const alertBox = document.getElementById('customAlert');
+  alertBox.classList.remove('show', 'success', 'error', 'info');
 }
     
     window.onload = () => {
