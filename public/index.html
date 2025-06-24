@@ -319,67 +319,77 @@ button { cursor: pointer; user-select: none; } .primary-btn { width: 100%; max-w
   }
 
   function renderPanels(panels) {
-    const container = document.getElementById('panels');
-    container.innerHTML = '';
+  const container = document.getElementById('panels');
+  container.innerHTML = '';
 
-    if (!Array.isArray(panels) || panels.length === 0) {
-      container.innerHTML = '<i style="color:#888">Create Panel Terlebih Dahulu</i>';
-      return;
-    }
-
-    panels.forEach(panel => {
-      const loginUrl = panel.loginUrl || 'https://private-server.yudzxsnayders.x-vvip.cloud/';
-      const encoded = encodeURIComponent(JSON.stringify(panel));
-
-      const div = document.createElement('div');
-      div.className = 'panel-box';
-
-      div.innerHTML = `
-        ${renderInfo("ID SERVER", panel.serverId)}
-        ${renderInfo("ID USER", panel.userId)}
-        ${renderInfo("URL LOGIN", loginUrl)}
-        ${renderInfo("USERNAME", panel.username)}
-        ${renderInfo("PASSWORD", panel.password)}
-        ${renderInfo("RAM", panel.ram)}
-        ${renderInfo("TANGGAL", panel.createdAt || 'N/A')}
-
-        <div class="panel-actions">
-          <button class="copy-btn" onclick="copyToClipboard('${loginUrl}')">Copy URL</button>
-          <button class="copy-btn" onclick="copyToClipboard('${panel.username}')">Copy Username</button>
-          <button class="copy-btn" onclick="copyToClipboard('${panel.password}')">Copy Password</button>
-          <button class="delete-btn" onclick="deletePanel(decodeURIComponent('${encoded}'))">Delete</button>
-        </div>
-      `;
-
-      container.appendChild(div);
-    });
+  if (!Array.isArray(panels) || panels.length === 0) {
+    container.innerHTML = '<i style="color:#888">Create Panel Terlebih Dahulu</i>';
+    return;
   }
 
-  function renderInfo(label, value) {
-    return `
-      <div class="panel-info">
-        <b>${label}:</b>
-        <span class="value-hidden" data-value="${value}">****</span>
-        <button class="toggle-btn" onclick="toggleVisibility(this)">
-          <i class="fas fa-eye"></i>
-        </button>
+  panels.forEach(panel => {
+    const loginUrl = panel.loginUrl || 'https://private-server.yudzxsnayders.x-vvip.cloud/';
+    const encoded = encodeURIComponent(JSON.stringify(panel));
+
+    const div = document.createElement('div');
+    div.className = 'panel-box';
+
+    div.innerHTML = `
+      ${renderInfo("ID SERVER", panel.serverId)}
+      ${renderInfo("ID USER", panel.userId)}
+      ${renderInfo("URL LOGIN", loginUrl)}
+      ${renderInfo("USERNAME", panel.username)}
+      ${renderInfo("PASSWORD", panel.password)}
+      ${renderInfo("RAM", panel.ram)}
+      ${renderInfo("TANGGAL", panel.createdAt || 'N/A')}
+
+      <div class="panel-actions">
+        <button class="copy-btn" onclick="copyToClipboard('${loginUrl}')">Copy URL</button>
+        <button class="copy-btn" onclick="copyToClipboard('${panel.username || ''}')">Copy Username</button>
+        <button class="copy-btn" onclick="copyToClipboard('${panel.password || ''}')">Copy Password</button>
+        <button class="delete-btn" onclick="deletePanel(decodeURIComponent('${encoded}'))">Delete</button>
       </div>
     `;
-  }
 
-  function toggleVisibility(button) {
-    const span = button.previousElementSibling;
-    const realValue = span.getAttribute('data-value');
-    const icon = button.querySelector('i');
+    container.appendChild(div);
+  });
+}
 
-    if (span.textContent === '****') {
-      span.textContent = realValue;
-      icon.classList.replace('fa-eye', 'fa-eye-slash');
-    } else {
-      span.textContent = '****';
-      icon.classList.replace('fa-eye-slash', 'fa-eye');
-    }
+  function renderInfo(label, value) {
+  return `
+    <div class="panel-info">
+      <b>${label}:</b>
+      <span class="password-hidden" data-password="${value || 'N/A'}">****</span>
+      <button class="toggle-pass-btn" onclick="togglePasswordVisibility(this)">
+        <i class="fas fa-eye"></i>
+      </button>
+    </div>
+  `;
+}
+
+  function copyToClipboard(text) {  
+  navigator.clipboard.writeText(text).then(() => {  
+    showAlert(`Copied: ${text}`, 'success');  
+  }).catch(() => {  
+    showAlert('Failed to copy text.', 'error');  
+  });  
+}
+
+  function togglePasswordVisibility(button) {
+  const span = button.previousElementSibling;
+  const realValue = span.getAttribute('data-password');
+  const icon = button.querySelector('i');
+
+  if (span.textContent === '****') {
+    span.textContent = realValue;
+    icon.classList.remove('fa-eye');
+    icon.classList.add('fa-eye-slash');
+  } else {
+    span.textContent = '****';
+    icon.classList.remove('fa-eye-slash');
+    icon.classList.add('fa-eye');
   }
+}
 
   async function createPanel() {
     const btn = document.getElementById('createBtn'); btn.disabled = true;
