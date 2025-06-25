@@ -197,8 +197,12 @@ button { cursor: pointer; user-select: none; } .primary-btn { width: 100%; max-w
     <button id="loginBtn" class="primary-btn" onclick="login()">LOGIN</button>
   </div>
   <div id="mainBox" style="display:none">
-    <h3>INFO AKUN</h3>
-    <div id="accountInfo" style="margin-bottom:20px; font-size:0.95rem; color:#00ccff;"></div>
+<h3>INFO AKUN</h3>
+<div id="accountInfo" style="margin-bottom:20px; font-size:0.95rem; color:#00ccff;"></div>
+
+<a href="perpanjangan.html" id="copy-btn" class="primary-btn" style="margin-bottom: 20px;">PERPANJANG AKUN</a>
+
+<button id="logoutBtn" onclick="logout()" class="primary-btn" style="margin-bottom: 20px; display:none;">LOGOUT</button>
     <h3>CREATE PANEL</h3>
     <input type="text" id="cuser" placeholder="Panel Username" />
     <input type="password" id="cpass" placeholder="Panel Password" />
@@ -218,7 +222,6 @@ button { cursor: pointer; user-select: none; } .primary-btn { width: 100%; max-w
     <button id="createBtn" class="primary-btn" onclick="createPanel()">CREATE PANEL</button>
     <h3>PANEL DETAIL</h3>
     <div id="panels"><i>Memuat Panels...</i></div>
-    <button id="logoutBtn" onclick="logout()" class="primary-btn" style="margin-bottom: 20px; display:none;">LOGOUT</button>
   </div>
 <script>
   const API_URL = '/api';
@@ -282,33 +285,25 @@ button { cursor: pointer; user-select: none; } .primary-btn { width: 100%; max-w
 
   function showAccountInfo(expiredAt) {
   const info = document.getElementById('accountInfo');
-
+  info.innerHTML = '';
   if (!expiredAt) {
-    info.textContent = 'Masa aktif akun: Tidak ada';
+    const p = document.createElement('p');
+    p.innerHTML = 'Masa aktif akun: <b>∞</b>';
+    info.appendChild(p);
     return;
   }
-
   const expDate = new Date(expiredAt);
   const now = new Date();
-  const diff = Math.ceil((expDate - now) / 864e5);
-
-  const statusText = diff > 0
-    ? `${diff} hari tersisa`
+  const diffDays = Math.ceil((expDate - now) / 864e5);
+  const statusText = diffDays > 0
+    ? `${diffDays} hari tersisa`
     : 'Kadaluarsa';
-
-  info.innerHTML = `
-    <p>
-      Masa aktif akun hingga: 
-      <b>${expDate.toLocaleDateString()}</b>
-      (${statusText})
-    </p>
-    <button
-      class="copy-btn"
-      onclick="window.location.href='BuyAccess.html'"
-    >
-      Perpanjang Akun
-    </button>
-  `;
+  const expiredEl = document.createElement('p');
+  expiredEl.innerHTML = `Tanggal Expired: <b>${expDate.toLocaleDateString()}</b>`;
+  info.appendChild(expiredEl);
+  const remainingEl = document.createElement('p');
+  remainingEl.innerHTML = `Sisa Hari: <b>${statusText}</b>`;
+  info.appendChild(remainingEl);
 }
 
   function logout() {
