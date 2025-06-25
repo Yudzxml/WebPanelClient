@@ -501,6 +501,7 @@ button { cursor: pointer; user-select: none; } .primary-btn { width: 100%; max-w
         document.getElementById('loginBox').style.display = 'none';
         document.getElementById('mainBox').style.display = 'block';
         document.getElementById('accountActions').style.display = 'flex';
+        document.getElementById('logoutBtn').style.display = 'block';
         fetch(API_URL + '/list-users')
           .then(res => res.json())
           .then(data => {
