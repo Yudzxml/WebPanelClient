@@ -281,16 +281,35 @@ button { cursor: pointer; user-select: none; } .primary-btn { width: 100%; max-w
   }
 
   function showAccountInfo(expiredAt) {
-    const info = document.getElementById('accountInfo');
-    if (!expiredAt) {
-      info.textContent = 'Masa aktif akun: Tidak ada';
-      return;
-    }
-    const expDate = new Date(expiredAt);
-    const now = new Date();
-    const diff = Math.ceil((expDate - now) / 864e5);
-    info.innerHTML = `Masa aktif akun hingga: <b>${expDate.toLocaleDateString()}</b> (${diff > 0 ? diff + ' hari tersisa' : 'Kadaluarsa'})`;
+  const info = document.getElementById('accountInfo');
+
+  if (!expiredAt) {
+    info.textContent = 'Masa aktif akun: Tidak ada';
+    return;
   }
+
+  const expDate = new Date(expiredAt);
+  const now = new Date();
+  const diff = Math.ceil((expDate - now) / 864e5);
+
+  const statusText = diff > 0
+    ? `${diff} hari tersisa`
+    : 'Kadaluarsa';
+
+  info.innerHTML = `
+    <p>
+      Masa aktif akun hingga: 
+      <b>${expDate.toLocaleDateString()}</b>
+      (${statusText})
+    </p>
+    <button
+      class="copy-btn"
+      onclick="window.location.href='BuyAccess.html'"
+    >
+      Perpanjang Akun
+    </button>
+  `;
+}
 
   function logout() {
     document.cookie = "user=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
