@@ -15,6 +15,7 @@
       min-height: 100vh;
     }
     * { box-sizing: border-box; }
+    
     h1 {
       text-align: center;
       font-size: 2.4rem;
@@ -27,24 +28,35 @@
       color: #00ccff;
       border-bottom: 2px solid #00ccff55;
       padding-bottom: 8px;
-      margin-top: 28px;
-      margin-bottom: 20px;
+      margin: 28px 0 20px;
       font-weight: 600;
       letter-spacing: 0.04em;
       font-size: 1.2rem;
     }
 
+    #mainBox {
+      max-width: 400px;
+      margin: auto;
+      padding: 20px;
+      background: #111827;
+      border-radius: 12px;
+      box-shadow: 0 0 16px #00ccff44;
+    }
+
     /* Inputs & Selects */
     input, select {
-      width: 100%; max-width: 320px;
+      width: 100%;
       padding: 12px 16px;
       margin: 10px 0 20px;
-      border-radius: 10px; border: none;
-      background: #111827; color: #d6f6ff;
+      border-radius: 10px;
+      border: none;
+      background: #1f2937;
+      color: #d6f6ff;
       font-size: 1rem;
       box-shadow: inset 0 0 8px #00ccff44;
       transition: box-shadow 0.25s ease, outline-color 0.25s ease;
-      outline-offset: 2px; outline-color: transparent;
+      outline-offset: 2px;
+      outline-color: transparent;
     }
     input:focus, select:focus {
       outline-color: #00ccffcc;
@@ -53,14 +65,19 @@
 
     /* Buttons */
     button {
-      cursor: pointer; user-select: none;
+      cursor: pointer;
+      user-select: none;
     }
     .primary-btn {
-      width: 100%; max-width: 320px;
-      padding: 12px 0; margin-top: 12px;
-      font-size: 1.1rem; font-weight: 700;
-      color: #000; background: #00ccff;
-      border: none; border-radius: 10px;
+      width: 100%;
+      padding: 12px 0;
+      margin-top: 12px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #000;
+      background: #00ccff;
+      border: none;
+      border-radius: 10px;
       box-shadow: 0 0 16px #00ccffcc;
       transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
       text-align: center;
@@ -75,8 +92,10 @@
       box-shadow: 0 0 16px #00ccffcc;
     }
     .primary-btn:disabled {
-      background: #444; color: #999;
-      cursor: not-allowed; box-shadow: none;
+      background: #444;
+      color: #999;
+      cursor: not-allowed;
+      box-shadow: none;
     }
 
     /* Alert */
@@ -84,17 +103,24 @@
       position: fixed;
       top: 50%; left: 50%;
       transform: translate(-50%, -50%) scale(0.95);
-      min-width: 280px; max-width: 90vw;
+      min-width: 280px;
+      max-width: 90vw;
       background-color: #00cc66;
-      padding: 20px 24px; border-radius: 12px;
-      color: #fff; font-weight: 600; font-size: 1rem;
+      padding: 20px 24px;
+      border-radius: 12px;
+      color: #fff;
+      font-weight: 600;
+      font-size: 1rem;
       box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-      opacity: 0; pointer-events: none;
-      z-index: 9999; text-align: center;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 9999;
+      text-align: center;
       transition: opacity 0.4s ease, transform 0.4s ease;
     }
     #customAlert.show {
-      opacity: 1; pointer-events: auto;
+      opacity: 1;
+      pointer-events: auto;
       transform: translate(-50%, -50%) scale(1);
     }
     #customAlert.error { background-color: #ff3366; }
@@ -115,7 +141,7 @@
     }
 
     @media (max-width: 768px) {
-      #mainBox { padding: 22px 26px; }
+      #mainBox { padding: 22px; }
     }
   </style>
 </head>
@@ -134,8 +160,8 @@
     <input type="tel"   id="phone" placeholder="Nomor Telepon Anda" required />
 
     <select id="paket">
-      <option value="7|7000">30 Hari — Rp 7.000</option>
-      <!-- Bisa ditambah paket lain di sini -->
+      <option value="+1|1">30 Hari — Rp 7.000</option>
+      <!-- Tambah paket lain di sini: value="{days}|{price}" -->
     </select>
 
     <button id="payBtn" class="primary-btn">Bayar &amp; Perpanjang</button>
@@ -143,109 +169,153 @@
     <div id="qrisContainer" style="display:none; margin-top:20px; text-align:center;">
       <p>Scan QR berikut untuk membayar:</p>
       <img id="qrisImg" src="" alt="QRIS Pembayaran" style="border-radius:8px; max-width:100%;" />
+      <button id="cancelBtn" class="primary-btn" style="background:#ff3366; display:none; margin-top:12px;">Batalkan Order</button>
       <p id="expireInfo"></p>
     </div>
   </div>
 
-  <script>
-    const API_CREATE = 'https://api-payment-yudzxml.vercel.app/api/createTransaction';
-    const API_STATUS = 'https://api-payment-yudzxml.vercel.app/api/getTransaction';
-    const API_QRCODE = '/api/qrGenerate';
+<!-- Tambahan di dalam <script> -->
+<script>
+  const API_CREATE = 'https://api-payment-yudzxml.vercel.app/api/createTransaction';
+  const API_STATUS = 'https://api-payment-yudzxml.vercel.app/api/getTransaction';
+  const API_CANCEL = 'https://api-payment-yudzxml.vercel.app/api/cancelTransaction';
 
-    function showAlert(msg, type='success') {
-      const box = document.getElementById('customAlert');
-      box.className = '';
-      box.classList.add('show', type);
-      document.getElementById('customAlertText').innerText = msg;
-      clearTimeout(box.timer);
-      box.timer = setTimeout(hideAlert, 4000);
-    }
-    function hideAlert() {
-      document.getElementById('customAlert').classList.remove('show','success','error','info');
-    }
+  let currentTransactionId = null;
+  let pollingInterval = null;
 
-    async function createTransaction(external_id, amount, name, email, phone) {
-      const payload = {
-        external_id,
-        amount,
-        description: 'Perpanjangan akun',
-        customer_name: name,
-        customer_email: email,
-        customer_phone: phone,
-        webhook_url: ''
-      };
-      const res = await fetch(API_CREATE, {
-        method: 'POST',
-        headers: { 'Content-Type':'application/json' },
-        body: JSON.stringify(payload)
-      });
-      return res.json();
-    }
+  function showAlert(msg, type = 'success') {
+    const box = document.getElementById('customAlert');
+    box.className = '';
+    box.classList.add('show', type);
+    document.getElementById('customAlertText').innerText = msg;
+    clearTimeout(box.timer);
+    box.timer = setTimeout(hideAlert, 4000);
+  }
 
-    async function getTransaction(id) {
-      const res = await fetch(`${API_STATUS}?id=${id}`);
-      return res.json();
-    }
+  function hideAlert() {
+    const box = document.getElementById('customAlert');
+    box.classList.remove('show', 'success', 'error', 'info');
+  }
 
-    document.getElementById('payBtn').addEventListener('click', async () => {
-      const name  = document.getElementById('name').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const phone = document.getElementById('phone').value.trim();
-      const [days, price] = document.getElementById('paket').value.split('|').map(Number);
-
-      if (!name)  return showAlert('Nama wajib diisi!','error');
-      if (!email) return showAlert('Email wajib diisi!','error');
-      if (!phone) return showAlert('Nomor telepon wajib diisi!','error');
-
-      const btn = document.getElementById('payBtn');
-      btn.disabled = true;
-      btn.innerText = 'Membuat transaksi...';
-
-      const externalId = Date.now().toString();
-      let trx;
-      try {
-        trx = await createTransaction(externalId, price, name, email, phone);
-        if (!trx.success) throw new Error(trx.message||'Gagal membuat transaksi');
-      } catch (e) {
-        showAlert(e.message,'error');
-        btn.disabled = false;
-        btn.innerText = 'Bayar & Perpanjang';
-        return;
-      }
-
-      // Tampilkan QR
-      document.getElementById('qrisImg').src =
-        `${API_QRCODE}?text=${encodeURIComponent(trx.data.qris_url)}`;
-      document.getElementById('expireInfo').innerText =
-        'Kadaluarsa: ' + new Date(trx.data.expired_at)
-          .toLocaleString('id-ID');
-      document.getElementById('qrisContainer').style.display = 'block';
-      btn.innerText = 'Menunggu pembayaran...';
-
-      // Polling status
-      const interval = setInterval(async () => {
-        const statusRes = await getTransaction(trx.data.transaction_id);
-        if (statusRes.success && (/paid/i).test(statusRes.data.status)) {
-          clearInterval(interval);
-          showAlert('Pembayaran terkonfirmasi! Memperpanjang...', 'info');
-          try {
-            const upd = await fetch(API_UPDATE, {
-              method: 'POST',
-              headers: { 'Content-Type':'application/json' },
-              body: JSON.stringify({ username: user.username, changeDays: days })
-            });
-            const updData = await upd.json();
-            if (!upd.ok) throw new Error(updData.message || 'Gagal memperpanjang');
-            showAlert(`Sukses diperpanjang +${days} hari!`, 'success');
-          } catch (e) {
-            showAlert(e.message, 'error');
-          } finally {
-            btn.disabled = false;
-            btn.innerText = 'Bayar & Perpanjang';
-          }
-        }
-      }, 5000);
+  async function createTransaction(external_id, amount, name, email, phone) {
+    const payload = {
+      external_id,
+      amount,
+      description: 'Perpanjangan akun',
+      customer_name: name,
+      customer_email: email,
+      customer_phone: phone,
+      webhook_url: ''
+    };
+    const res = await fetch(API_CREATE, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
     });
-  </script>
+    return res.json();
+  }
+
+  async function getTransaction(id) {
+    const res = await fetch(`${API_STATUS}?id=${id}`);
+    return res.json();
+  }
+
+  async function cancelTransaction(id) {
+    const res = await fetch(`${API_CANCEL}?id=${id}`);
+    return res.json();
+  }
+
+  document.getElementById('payBtn').addEventListener('click', async () => {
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const [days, price] = document.getElementById('paket').value.split('|').map(Number);
+    if (!name) return showAlert('Nama wajib diisi!', 'error');
+    if (!email) return showAlert('Email wajib diisi!', 'error');
+    if (!phone) return showAlert('Nomor telepon wajib diisi!', 'error');
+
+    const btn = document.getElementById('payBtn');
+    btn.disabled = true;
+    btn.innerText = 'Membuat transaksi...';
+
+    const externalId = `ORDER${Math.floor(100000 + Math.random() * 900000)}`;
+    let trx;
+    try {
+      trx = await createTransaction(externalId, price, name, email, phone);
+      if (!trx.success) throw new Error(trx.message || 'Gagal membuat transaksi');
+    } catch (e) {
+      showAlert(e.message, 'error');
+      btn.disabled = false;
+      btn.innerText = 'Bayar & Perpanjang';
+      return;
+    }
+
+    // Simpan ID transaksi & tampilkan QR
+    currentTransactionId = trx.data.transaction_id;
+    const kodeUnik = trx.data.unique_code;
+    const biayaAdmin = trx.data.fee;
+    const biayaPpn = 
+    document.getElementById('qrisImg').src = `/api/qrGenerate?text=${encodeURIComponent(trx.data.qris_url)}`;
+    
+    document.getElementById('expireInfo').innerText =
+   `Ppn: Rp ${ (trx.data.unique_code + trx.data.fee).toLocaleString('id-ID') }\n`;
+  `Total: Rp ${trx.data.total_amount.toLocaleString('id-ID')}\n` +
+  'Expired: ' + new Date(trx.data.expired_at).toLocaleString('id-ID');
+    document.getElementById('qrisContainer').style.display = 'block';
+    document.getElementById('cancelBtn').style.display = 'inline-block';
+    btn.innerText = 'Menunggu pembayaran...';
+
+    // Mulai polling
+    pollingInterval = setInterval(async () => {
+      const statusRes = await getTransaction(currentTransactionId);
+      if (statusRes.success && /paid/i.test(statusRes.data.status)) {
+        clearInterval(pollingInterval);
+        showAlert('Pembayaran terkonfirmasi! Memperpanjang...', 'info');
+
+        try {
+          const updRes = await fetch("/api/update-user", {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username: email, changeDays: days })
+          });
+          const updData = await updRes.json();
+          if (!updRes.ok) throw new Error(updData.message || 'Gagal memperpanjang');
+          showAlert(`Sukses diperpanjang +${days} hari!`, 'success');
+        } catch (e) {
+          showAlert(e.message, 'error');
+        } finally {
+          btn.disabled = false;
+          btn.innerText = 'Bayar & Perpanjang';
+          document.getElementById('cancelBtn').style.display = 'none';
+        }
+      }
+    }, 2000);
+  });
+
+  document.getElementById('cancelBtn').addEventListener('click', async () => {
+    if (!currentTransactionId) return;
+    document.getElementById('cancelBtn').disabled = true;
+    showAlert('Membatalkan transaksi...', 'info');
+
+    try {
+      const cancelRes = await cancelTransaction(currentTransactionId);
+      if (!cancelRes.success) throw new Error(cancelRes.message || 'Gagal membatalkan');
+      showAlert('Transaksi berhasil dibatalkan', 'success');
+    } catch (e) {
+      showAlert(e.message, 'error');
+    } finally {
+      clearInterval(pollingInterval);
+      currentTransactionId = null;
+      pollingInterval = null;
+      document.getElementById('cancelBtn').style.display = 'none';
+      document.getElementById('qrisContainer').style.display = 'none';
+      document.getElementById('payBtn').disabled = false;
+      document.getElementById('payBtn').innerText = 'Bayar & Perpanjang';
+      document.getElementById('name').value = '';
+      document.getElementById('email').value = '';
+      document.getElementById('phone').value = '';
+    }
+  });
+</script>
 </body>
 </html>
