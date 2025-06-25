@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PERPANJANGAN AKUN BY YUDZXML</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+body {
+  background: #0a0a0f;
+  color: #d6f6ff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 24px 16px;
+  margin: 0;
+  min-height: 100vh;
+}
+* { box-sizing: border-box; }h1 { text-align: center; font-size: 2.4rem; color: #00ccff; text-shadow: 0 0 14px #00ccffaa; margin-bottom: 32px; font-weight: 700; }
+
+h3 { color: #00ccff; border-bottom: 2px solid #00ccff55; padding-bottom: 8px; margin-top: 28px; margin-bottom: 20px; font-weight: 600; letter-spacing: 0.04em; font-size: 1.2rem; }
+
+/* ===== Inputs & Selects ===== */ 
+input, select { width: 100%; max-width: 320px; padding: 12px 16px; margin: 10px 0 20px; border-radius: 10px; border: none; background: #111827; color: #d6f6ff; font-size: 1rem; box-shadow: inset 0 0 8px #00ccff44; transition: box-shadow 0.25s ease, outline-color 0.25s ease; outline-offset: 2px; outline-color: transparent; } input:focus, select:focus { outline-color: #00ccffcc; box-shadow: inset 0 0 10px #00ccffbb; }
+
+/* ===== Buttons ===== */
+button { cursor: pointer; user-select: none; } .primary-btn { width: 100%; max-width: 320px; padding: 12px 0; margin-top: 12px; font-size: 1.1rem; font-weight: 700; color: #000; background: #00ccff; border: none; border-radius: 10px; box-shadow: 0 0 16px #00ccffcc; transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease; text-align: center; } .primary-btn:hover:not(:disabled) { background: #009fcc; box-shadow: 0 0 24px #00e0ff; transform: translateY(-2px); } .primary-btn:active:not(:disabled) { transform: translateY(0); box-shadow: 0 0 16px #00ccffcc; } .primary-btn:disabled { background: #444; color: #999; cursor: not-allowed; box-shadow: none; }
+
+  .account-actions {
+      display: none;               /* initial hidden */
+      flex-direction: column;
+      gap: 12px;
+      max-width: 320px;
+      margin: 0 auto 20px;
+      width: 100%;
+    }
+    
+/* ===== Copy Buttons ===== */ 
+.copy-btn { background: none; border: none; cursor: pointer; font-size: 0.9rem; color: #00ccff; padding: 8px 14px; border-radius: 10px; transition: background-color 0.2s ease; } .copy-btn:hover { text-decoration: underline; background-color: #003f55; }
+
+.toggle-pass-btn { background: none; border: none; cursor: pointer; color: #00ffe5; margin-left: 5px; }
+
+/* ===== Boxes ===== */ 
+#loginBox, #mainBox { max-width: 340px; margin: 0 auto 28px; padding: 16px; background: rgba(255,255,255,0.02); border-radius: 14px; box-shadow: 0 0 12px #00ccff33; }
+
+/* ===== Panels ===== */ 
+#panels { margin-top: 24px; max-width: 780px; margin-left: auto; margin-right: auto; display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
+
+.panel-box { background: rgba(0,0,25,0.65); border: 1.6px solid #00ccff66; border-radius: 16px; padding: 18px 20px; width: 280px; box-shadow: 0 0 16px #00ccff99; backdrop-filter: blur(10px); transition: transform 0.25s ease, box-shadow 0.25s ease; display: flex; flex-direction: column; justify-content: space-between; } .panel-box:hover { transform: scale(1.04); box-shadow: 0 0 26px #00e0ffee; }
+
+.panel-info { margin-bottom: 10px; font-size: 0.95rem; line-height: 1.4; word-break: break-word; display: flex; align-items: center; justify-content: space-between; } .panel-info b { display: inline-block; width: 100px; color: #00ccff; font-weight: 700; }
+
+.panel-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.panel-actions button {
+  min-height: 40px;
+  text-align: center;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* ===== Tombol Delete ===== */ 
+.panel-actions .delete-btn { width: 100%; padding: 8px 14px; font-size: 0.9rem; border-radius: 10px; background: #ff3366; color: white; box-shadow: 0 0 12px #ff3366cc; border: none; font-weight: 600; transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease; } .panel-actions .delete-btn:hover { background: #cc204f; box-shadow: 0 0 20px #ff5577ff; transform: translateY(-2px); } .panel-actions .delete-btn:active { transform: translateY(0); box-shadow: 0 0 12px #ff3366cc; }
+
+/* ===== Tombol Copy ===== */ 
+.panel-actions .copy-btn,
+.panel-actions .delete-btn {
+  width: 100%;
+  padding: 8px 14px;
+  font-size: 0.9rem;
+  border-radius: 10px;
+  color: white;
+  font-weight: 600;
+  border: none;
+  transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 0 12px currentColor;
+}
+
+.panel-actions .copy-btn {
+  background: #0077cc;
+  box-shadow: 0 0 12px #0077cccc;
+}
+
+.panel-actions .copy-btn:hover {
+  background: #005fa3;
+  box-shadow: 0 0 20px #3399ffcc;
+  transform: translateY(-2px);
+}
+
+.panel-actions .copy-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 0 12px #0077cccc;
+}
+
+.panel-actions .delete-btn {
+  background: #ff3366;
+  box-shadow: 0 0 12px #ff3366cc;
+}
+
+.panel-actions .delete-btn:hover {
+  background: #cc204f;
+  box-shadow: 0 0 20px #ff5577ff;
+  transform: translateY(-2px);
+}
+
+.panel-actions .delete-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 0 12px #ff3366cc;
+}
+
+#logoutBtn {
+  display: none;
+  padding: 6px 12px;
+  font-size: 14px;
+  border-radius: 8px;
+  background-color: #ff3c3c;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 0 10px #ff3c3c;
+}
+
+#logoutBtn:hover {
+  background-color: #e62e2e;
+  box-shadow: 0 0 12px #ff5c5c;
+}
+
+#customAlert {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.95);
+  min-width: 280px;
+  max-width: 90vw;
+  background-color: #00cc66; /* default: success */
+  padding: 20px 24px;
+  border-radius: 12px;
+  color: #fff;
+  font-weight: 600;
+  font-size: 1rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 9999;
+  text-align: center;
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
+}
+
+#customAlert.show {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* Warna berdasarkan tipe alert */
+#customAlert.success {
+  background-color: #00cc66;
+}
+#customAlert.error {
+  background-color: #ff3366;
+}
+#customAlert.info {
+  background-color: #0077cc;
+}
+#customAlert button {
+  margin-top: 14px;
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  padding: 8px 16px;
+  color: white;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+#customAlert button:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+@media (max-width: 768px) { .panel-box { width: 90vw; padding: 22px 26px; } } 
+</style>
+</head>
+<body>
+
+  <div id="customAlert">
+    <div id="customAlertText"></div>
+    <button onclick="hideAlert()">OK</button>
+  </div>
+
+  <h1>PERPANJANGAN AKUN</h1>
+  <div id="mainBox">
+    <h3>Pilih Paket Perpanjangan</h3>
+    <select id="paket">
+      <option value="7|1">30 Hari — Rp 7.000</option>
+    </select>
+
+    <button id="payBtn" class="primary-btn">Bayar &amp; Perpanjang</button>
+
+    <div id="qrisContainer" style="display:none; margin-top: 20px; text-align: center;">
+      <p>Scan QR berikut untuk membayar:</p>
+      <img id="qrisImg" src="" alt="QRIS Pembayaran" style="border-radius: 8px; max-width: 100%;" />
+      <p id="expireInfo"></p>
+    </div>
+  </div>
+
+  <script>
+    const API_CREATE   = 'https://api-payment-yudzxml.vercel.app/api/createTransaction';
+    const API_STATUS   = 'https://api-payment-yudzxml.vercel.app/api/getTransaction';
+    const API_QRCODE   = '/api/qrGenerate';
+
+    function getCookie(name) {
+      return document.cookie.split('; ').reduce((r, c) => {
+        const [k, v] = c.split('='); return k === name ? decodeURIComponent(v) : r;
+      }, '');
+    }
+
+    function showAlert(msg, type='success') {
+      const box = document.getElementById('customAlert');
+      box.className = ''; box.classList.add('show', type);
+      document.getElementById('customAlertText').innerText = msg;
+      clearTimeout(box.timer);
+      box.timer = setTimeout(hideAlert, 4000);
+    }
+    function hideAlert() {
+      document.getElementById('customAlert').classList.remove('show','success','error','info');
+    }
+
+    async function createTransaction(external_id, amount, name, email, phone) {
+      const payload = {
+        external_id,
+        amount,
+        description: 'Perpanjangan akun',
+        customer_name: name,
+        customer_email: email,
+        customer_phone: phone,
+        webhook_url: ''
+      };
+      const res = await fetch(API_CREATE, {
+        method: 'POST',
+        headers: { 'Content-Type':'application/json' },
+        body: JSON.stringify(payload)
+      });
+      return res.json();
+    }
+
+    async function getTransaction(id) {
+      const res = await fetch(`${API_STATUS}?id=${id}`);
+      return res.json();
+    }
+
+    document.getElementById('payBtn').addEventListener('click', async () => {
+      const [days, price] = document.getElementById('paket').value.split('|').map(Number);
+      const user = JSON.parse(getCookie('user')||'{}');
+      if (!user.username) {
+        showAlert('Silakan login dahulu!','info');
+        return;
+      }
+
+      const btn = document.getElementById('payBtn');
+      btn.disabled = true;
+      btn.innerText = 'Membuat transaksi...';
+
+      const externalId = Date.now().toString();
+      let trx;
+      try {
+        trx = await createTransaction(externalId, price, user.username, user.username + '@example.com', '');
+        if (!trx.success) throw new Error(trx.message || 'Gagal membuat transaksi');
+      } catch (e) {
+        showAlert(e.message, 'error');
+        btn.disabled = false;
+        btn.innerText = 'Bayar & Perpanjang';
+        return;
+      }
+
+      const framedQrUrl = `${API_QRCODE}?text=${encodeURIComponent(trx.data.qris_url)}`;
+      document.getElementById('qrisImg').src = framedQrUrl;
+      document.getElementById('expireInfo').innerText =
+        'Kadaluarsa: ' + new Date(trx.data.expired_at).toLocaleString('id-ID');
+      document.getElementById('qrisContainer').style.display = 'block';
+
+      btn.innerText = 'Menunggu pembayaran...';
+
+      const interval = setInterval(async () => {
+        const statusRes = await getTransaction(trx.data.transaction_id);
+        if (statusRes.success && (/paid/i).test(statusRes.data.status)) {
+          clearInterval(interval);
+          showAlert('Pembayaran terkonfirmasi! Memperpanjang...', 'info');
+          try {
+            const upd = await fetch(API_UPDATE, {
+              method: 'POST',
+              headers: { 'Content-Type':'application/json' },
+              body: JSON.stringify({ username: user.username, changeDays: days })
+            });
+            const updData = await upd.json();
+            if (!upd.ok) throw new Error(updData.message || 'Gagal memperpanjang');
+            showAlert(`Sukses diperpanjang +${days} hari!`, 'success');
+          } catch (e) {
+            showAlert(e.message, 'error');
+          } finally {
+            btn.disabled = false;
+            btn.innerText = 'Bayar & Perpanjang';
+          }
+        }
+      }, 5000);
+    });
+
+    window.onload = () => {
+      if (!getCookie('user')) {
+        showAlert('Silakan login dahulu!', 'info');
+        setTimeout(() => location.href = 'index.html', 2000);
+      }
+    };
+  </script>
+</body>
+</html>
