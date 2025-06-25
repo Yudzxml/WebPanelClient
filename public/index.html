@@ -25,7 +25,7 @@ input, select { width: 100%; max-width: 320px; padding: 12px 16px; margin: 10px 
 /* ===== Buttons ===== */
 button { cursor: pointer; user-select: none; } .primary-btn { width: 100%; max-width: 320px; padding: 12px 0; margin-top: 12px; font-size: 1.1rem; font-weight: 700; color: #000; background: #00ccff; border: none; border-radius: 10px; box-shadow: 0 0 16px #00ccffcc; transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease; text-align: center; } .primary-btn:hover:not(:disabled) { background: #009fcc; box-shadow: 0 0 24px #00e0ff; transform: translateY(-2px); } .primary-btn:active:not(:disabled) { transform: translateY(0); box-shadow: 0 0 16px #00ccffcc; } .primary-btn:disabled { background: #444; color: #999; cursor: not-allowed; box-shadow: none; }
 
-      .account-actions {
+  .account-actions {
       display: none;               /* initial hidden */
       flex-direction: column;
       gap: 12px;
@@ -285,7 +285,7 @@ button { cursor: pointer; user-select: none; } .primary-btn { width: 100%; max-w
         document.getElementById('loginBox').style.display = 'none';
         document.getElementById('mainBox').style.display = 'block';
         document.getElementById('accountActions').style.display = 'flex';
-
+        document.getElementById('logoutBtn').style.display = 'block';
         showAccountInfo(foundUser.expiredAt);
         loadPanels();
       } catch (e) {
