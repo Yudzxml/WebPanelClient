@@ -24,13 +24,16 @@ module.exports = async (req, res) => {
     console.log("Sending JSON to external API:", panelData);
 
     const apiRes = await axios.post(
-      "https://api-yudzxml.koyeb.app/api/panelHandler/create-panel",
-      panelData,
-      {
-        headers: { "Content-Type": "application/json" },
-        validateStatus: () => true,
-      }
-    );
+  "https://api-yudzxml.koyeb.app/api/panelHandler/create-panel",
+  panelData,
+  {
+    headers: {
+      "Content-Type": "application/json",
+      "Origin": "https://resellerpanelku.x-server.web.id"
+    },
+    validateStatus: () => true,
+  }
+);
 
     if (apiRes.status !== 200) {
       console.error("External API error response:", apiRes.data);
