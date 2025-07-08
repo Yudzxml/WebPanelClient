@@ -174,7 +174,28 @@
     </div>
   </div>
 
-<!-- Tambahan di dalam <script> -->
-<script src="updateUserResseller.js"></script>
+  <!-- Script notifikasi -->
+  <script>
+    function showAlert(message, type = 'info') {
+      const alertEl = document.getElementById('customAlert');
+      const textEl  = document.getElementById('customAlertText');
+      alertEl.classList.remove('error', 'info');
+      alertEl.classList.add(type);
+      textEl.textContent = message;
+      alertEl.classList.add('show');
+    }
+
+    function hideAlert() {
+      document.getElementById('customAlert').classList.remove('show');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      showAlert(
+        'KAMI TELAH MENUTUP FITUR PERPANJANGAN PANEL OTOMATIS, ' +
+        'SILAHKAN LAKUKAN PERPANJANGAN PANEL LEWAT WHATSAPP ADMIN',
+        'error'
+      );
+    });
+  </script>
 </body>
 </html>
