@@ -1,1 +1,166 @@
-const _0xd93bb8=_0x15be;(function(_0x3b4b4b,_0x422d21){const _0x1394f3=_0x15be,_0x54d2c8=_0x3b4b4b();while(!![]){try{const _0x456284=-parseInt(_0x1394f3(0x18b))/0x1+-parseInt(_0x1394f3(0x172))/0x2+parseInt(_0x1394f3(0x188))/0x3+-parseInt(_0x1394f3(0x1a0))/0x4+parseInt(_0x1394f3(0x189))/0x5*(-parseInt(_0x1394f3(0x193))/0x6)+parseInt(_0x1394f3(0x17c))/0x7*(-parseInt(_0x1394f3(0x167))/0x8)+parseInt(_0x1394f3(0x16c))/0x9;if(_0x456284===_0x422d21)break;else _0x54d2c8['push'](_0x54d2c8['shift']());}catch(_0x1674ad){_0x54d2c8['push'](_0x54d2c8['shift']());}}}(_0x46f1,0xe0b32));function _0x15be(_0x31c3e3,_0x4c17fc){const _0x1c9ead=_0x46f1();return _0x15be=function(_0xa9f613,_0x181de2){_0xa9f613=_0xa9f613-0x154;let _0x38e4c8=_0x1c9ead[_0xa9f613];if(_0x15be['zlSteE']===undefined){var _0x46f19e=function(_0x37a568){const _0x1be53e='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/=';let _0x403f8a='',_0x5e1070='';for(let _0x2b761c=0x0,_0x2bd12e,_0x145320,_0x2a3d4a=0x0;_0x145320=_0x37a568['charAt'](_0x2a3d4a++);~_0x145320&&(_0x2bd12e=_0x2b761c%0x4?_0x2bd12e*0x40+_0x145320:_0x145320,_0x2b761c++%0x4)?_0x403f8a+=String['fromCharCode'](0xff&_0x2bd12e>>(-0x2*_0x2b761c&0x6)):0x0){_0x145320=_0x1be53e['indexOf'](_0x145320);}for(let _0x3aed5f=0x0,_0x5affe7=_0x403f8a['length'];_0x3aed5f<_0x5affe7;_0x3aed5f++){_0x5e1070+='%'+('00'+_0x403f8a['charCodeAt'](_0x3aed5f)['toString'](0x10))['slice'](-0x2);}return decodeURIComponent(_0x5e1070);};_0x15be['cozeWl']=_0x46f19e,_0x31c3e3=arguments,_0x15be['zlSteE']=!![];}const _0x15bef3=_0x1c9ead[0x0],_0x5ea55d=_0xa9f613+_0x15bef3,_0x3ff380=_0x31c3e3[_0x5ea55d];return!_0x3ff380?(_0x38e4c8=_0x15be['cozeWl'](_0x38e4c8),_0x31c3e3[_0x5ea55d]=_0x38e4c8):_0x38e4c8=_0x3ff380,_0x38e4c8;},_0x15be(_0x31c3e3,_0x4c17fc);}const _0x181de2=(function(){let _0x2b761c=!![];return function(_0x2bd12e,_0x145320){const _0x2a3d4a=_0x2b761c?function(){const _0xf9b100=_0x15be;if(_0x145320){const _0x3aed5f=_0x145320[_0xf9b100(0x187)](_0x2bd12e,arguments);return _0x145320=null,_0x3aed5f;}}:function(){};return _0x2b761c=![],_0x2a3d4a;};}()),_0xa9f613=_0x181de2(this,function(){const _0x1ecf93=_0x15be,_0x5affe7=function(){const _0x5ec397=_0x15be;let _0x46d419;try{_0x46d419=Function(_0x5ec397(0x18c)+_0x5ec397(0x163)+');')();}catch(_0x161e11){_0x46d419=window;}return _0x46d419;},_0x4cd007=_0x5affe7(),_0x33c271=_0x4cd007[_0x1ecf93(0x162)]=_0x4cd007[_0x1ecf93(0x162)]||{},_0x198568=[_0x1ecf93(0x184),_0x1ecf93(0x1af),_0x1ecf93(0x177),'error','exception',_0x1ecf93(0x1a5),_0x1ecf93(0x165)];for(let _0x1037d9=0x0;_0x1037d9<_0x198568[_0x1ecf93(0x155)];_0x1037d9++){const _0x416cdd=_0x181de2[_0x1ecf93(0x1b0)][_0x1ecf93(0x15f)][_0x1ecf93(0x19b)](_0x181de2),_0x30c665=_0x198568[_0x1037d9],_0x24a8b6=_0x33c271[_0x30c665]||_0x416cdd;_0x416cdd[_0x1ecf93(0x17e)]=_0x181de2[_0x1ecf93(0x19b)](_0x181de2),_0x416cdd['toString']=_0x24a8b6[_0x1ecf93(0x15a)][_0x1ecf93(0x19b)](_0x24a8b6),_0x33c271[_0x30c665]=_0x416cdd;}});_0xa9f613();const API_CREATE=_0xd93bb8(0x19a),API_STATUS='https://api-payment-yudzxml.vercel.app/api/getTransaction',API_CANCEL=_0xd93bb8(0x16f);let currentTransactionId=null,pollingInterval=null;function _0x46f1(){const _0x22449a=['DMfSDwu','ugvTyMf5yxjHBIb0zxjRB25MAxjTyxnPisbnzw1WzxjWyw5Qyw5NlI4U','Bg9N','zgLZCgXHEq','AwqTsuq','yxbWBhK','mtG3ntK5mhzXz2HsBq','otvItLjtA1e','yxbWBgLJyxrPB24VANnVBG','mti5nZK2mvH5swjqCq','CMv0DxjUicHMDw5JDgLVBIGPia','CMvTB3zL','r2fNywWGBwvTyNvHDcb0CMfUC2fRC2K','y2XPy2S','y2fUy2vSqNrU','DgLTzxi','y2XHC3noyw1L','mZmZndyYthHvzvbO','CxjPC0LTzW','ywrKrxzLBNrmAxn0zw5LCG','t1jervi','CxjPC0nVBNrHAw5LCG','l2fWAs91CgrHDguTDxnLCG','zgLZywjSzwq','Ahr0Chm6lY9HCgKTCgf5BwvUDc15Dwr6Eg1SlNzLCMnLBc5HChaVyxbPl2nYzwf0zvrYyw5Zywn0Aw9U','yMLUza','Aw5SAw5LlwjSB2nR','C3rYAw5NAwz5','y3vZDg9TqwXLCNq','uhbUoIbsCca','ndeWodu1nMrPvg5szW','DhjPBq','Ahr0Chm6lY9HCgKTCgf5BwvUDc15Dwr6Eg1SlNzLCMnLBc5HChaVyxbPl2nHBMnLBfrYyw5Zywn0Aw9Up2LKpq','C3rHDhvZ','CgHVBMu','DgfIBgu','CMfUzg9T','qMf5yxiGjIbqzxjWyw5Qyw5N','vg90ywW6ifjWia','y2XHC3nmAxn0','Aw5UzxjuzxH0','twvTyNvHDcb0CMfUC2fRC2KUlI4','y3vZDg9TqwXLCNruzxH0','ANnVBG','BwfW','D2fYBG','y29UC3rYDwn0B3i','CgfRzxq','DhjHBNnHy3rPB25FAwq','zxHWAxjLsw5MBW','BgvUz3rO','C3jJ','r2fNywWGBwvTyMf0ywXRyw4','rxHWAxjLzdOG','DgvZDa','Dg9tDhjPBMC','C3r5Bgu','ue9tva','BMfTzq','C3bSAxq','ChjVDg90ExbL','BwvZC2fNzq','Dg9mB2nHBgvtDhjPBMC','y29UC29Szq','E30Uy29UC3rYDwn0B3iOiNjLDhvYBIb0AgLZiIKOicK','zgf0yq','DhjHy2u','rw1HAwWGD2fQAwiGzgLPC2KH','mJm2mhLwBK1LzW','tMfTysb3ywPPyIbKAwLZAse','zw1HAwW','4PYfifrYyw5ZywTZAsbIzxjOyxnPBcbKAwjHDgfSA2fUlG','z2v0rwXLBwvUDej5swq','mZK4mZe4ndLjre5fD3O','C3vJy2vZCW','BM9Uzq','Ahr0Chm6lY9HCgKTCgf5BwvUDc15Dwr6Eg1SlNzLCMnLBc5HChaVyxbPl2nHBMnLBfrYyw5Zywn0Aw9U','Cgf5qNrU','Dw5PCxvLx2nVzgu','mtGXmJu2z2LOz3vL','p2LKpq','zMXVB3i','zxjYB3i','yMXVy2S','Aw5MBW','zMvL','Dg90ywXFyw1VDw50','r2fNywWGBwvTyMf0ywXRyw4GDhjHBNnHA3nPlG','C2HVDW','mtu2mZHcvxPJwva','ywrK','x19WCM90B19F','twvTyMf0ywXRyw4GDhjHBNnHA3nPlI4U','ugvYCgfUAMfUz2fUigfRDw4','l2fWAs9XCKDLBMvYyxrLp3rLEhq9'];_0x46f1=function(){return _0x22449a;};return _0x46f1();}function showAlert(_0x5336d4,_0x20f29d='success'){const _0x18450d=_0xd93bb8,_0x112ac0=document[_0x18450d(0x16b)](_0x18450d(0x19e));_0x112ac0[_0x18450d(0x192)]='',_0x112ac0[_0x18450d(0x1a9)][_0x18450d(0x17d)](_0x18450d(0x17b),_0x20f29d),document[_0x18450d(0x16b)](_0x18450d(0x1ac))['innerText']=_0x5336d4,clearTimeout(_0x112ac0[_0x18450d(0x191)]),_0x112ac0['timer']=setTimeout(hideAlert,0xfa0);}function hideAlert(){const _0x47cd3d=_0xd93bb8,_0x3572ad=document[_0x47cd3d(0x16b)](_0x47cd3d(0x19e));_0x3572ad[_0x47cd3d(0x1a9)][_0x47cd3d(0x18d)](_0x47cd3d(0x17b),'success',_0x47cd3d(0x175),'info');}async function createTransaction(_0x16f652,_0x483e8,_0x536757,_0x2c2333,_0x53e27a){const _0x40541f=_0xd93bb8,_0x45b085={'external_id':_0x16f652,'amount':_0x483e8,'description':_0x40541f(0x180),'customer_name':_0x536757,'customer_email':_0x2c2333,'customer_phone':_0x53e27a,'webhook_url':''},_0xf795bc=await fetch(API_CREATE,{'method':_0x40541f(0x15c),'headers':{'Content-Type':_0x40541f(0x18a)},'body':JSON['stringify'](_0x45b085)});return _0xf795bc[_0x40541f(0x1ad)]();}async function getTransaction(_0x4e744f){const _0x311df4=_0xd93bb8,_0x530f8f=await fetch(API_STATUS+_0x311df4(0x173)+_0x4e744f);return _0x530f8f[_0x311df4(0x1ad)]();}async function cancelTransaction(_0x2b6315){const _0x24b559=_0xd93bb8;try{const _0x32c433=await fetch(_0x24b559(0x1a2)+encodeURIComponent(_0x2b6315),{'method':_0x24b559(0x15c),'headers':{'Content-Type':_0x24b559(0x18a)}}),_0x1ac083=await _0x32c433[_0x24b559(0x1ad)]();if(!_0x32c433['ok'])return{'success':![],'message':_0x1ac083['error']||_0x24b559(0x17a)};return _0x1ac083;}catch(_0x26ba50){return console['error']('❌\x20Gagal\x20membatalkan\x20transaksi:',_0x26ba50),{'success':![],'message':_0x26ba50[_0x24b559(0x160)]||'Terjadi\x20kesalahan\x20saat\x20membatalkan.'};}}document[_0xd93bb8(0x16b)](_0xd93bb8(0x170))[_0xd93bb8(0x195)](_0xd93bb8(0x18f),async()=>{const _0x16adb1=_0xd93bb8,_0x14ea38=document[_0x16adb1(0x16b)](_0x16adb1(0x15d))[_0x16adb1(0x182)][_0x16adb1(0x1a1)](),_0x186876=document[_0x16adb1(0x16b)](_0x16adb1(0x169))[_0x16adb1(0x182)][_0x16adb1(0x1a1)](),_0xfe508e=document[_0x16adb1(0x16b)](_0x16adb1(0x1a4))[_0x16adb1(0x182)][_0x16adb1(0x1a1)](),[_0x454340,_0x7bcd0c]=document[_0x16adb1(0x16b)](_0x16adb1(0x1b1))[_0x16adb1(0x182)][_0x16adb1(0x15e)]('|')[_0x16adb1(0x1ae)](Number);if(!_0x14ea38)return showAlert(_0x16adb1(0x168),_0x16adb1(0x175));if(!_0x186876)return showAlert(_0x16adb1(0x166),_0x16adb1(0x175));if(!_0xfe508e)return showAlert('Nomor\x20telepon\x20wajib\x20diisi!',_0x16adb1(0x175));const _0x594ff8=document[_0x16adb1(0x16b)]('payBtn');_0x594ff8[_0x16adb1(0x199)]=!![],_0x594ff8[_0x16adb1(0x1aa)]=_0x16adb1(0x1ab);const _0x6fe03d=_0x16adb1(0x196)+Math[_0x16adb1(0x174)](0x186a0+Math[_0x16adb1(0x1a6)]()*0xdbba0);let _0x1d4b10;try{_0x1d4b10=await createTransaction(_0x6fe03d,_0x7bcd0c,_0x14ea38,_0x186876,_0xfe508e);if(!_0x1d4b10['success'])throw new Error(_0x1d4b10[_0x16adb1(0x160)]||_0x16adb1(0x18e));}catch(_0x16e07e){showAlert(_0x16e07e['message'],_0x16adb1(0x175)),_0x594ff8['disabled']=![],_0x594ff8['innerText']=_0x16adb1(0x1a7);return;}currentTransactionId=_0x1d4b10[_0x16adb1(0x164)][_0x16adb1(0x1b2)];const _0x865768=_0x1d4b10[_0x16adb1(0x164)][_0x16adb1(0x171)],_0x1941db=_0x1d4b10[_0x16adb1(0x164)][_0x16adb1(0x178)],_0x4fb2ad=document[_0x16adb1(0x16b)](_0x16adb1(0x194))[_0x16adb1(0x156)]=_0x16adb1(0x181)+encodeURIComponent(_0x1d4b10[_0x16adb1(0x164)]['qris_url']);document['getElementById'](_0x16adb1(0x154))['innerText']=_0x16adb1(0x19f)+(_0x1d4b10[_0x16adb1(0x164)][_0x16adb1(0x171)]+_0x1d4b10[_0x16adb1(0x164)][_0x16adb1(0x178)])[_0x16adb1(0x161)](_0x16adb1(0x186))+'\x0a',_0x16adb1(0x1a8)+_0x1d4b10[_0x16adb1(0x164)][_0x16adb1(0x179)][_0x16adb1(0x161)](_0x16adb1(0x186))+'\x0a'+_0x16adb1(0x158)+new Date(_0x1d4b10['data']['expired_at'])['toLocaleString'](_0x16adb1(0x186)),document['getElementById'](_0x16adb1(0x197))[_0x16adb1(0x15b)][_0x16adb1(0x185)]=_0x16adb1(0x176),document['getElementById']('cancelBtn')[_0x16adb1(0x15b)][_0x16adb1(0x185)]=_0x16adb1(0x19c),_0x594ff8[_0x16adb1(0x1aa)]='Menunggu\x20pembayaran...',pollingInterval=setInterval(async()=>{const _0x237a70=_0x16adb1,_0x26a5ed=await getTransaction(currentTransactionId);if(_0x26a5ed[_0x237a70(0x16d)]&&/paid/i[_0x237a70(0x159)](_0x26a5ed['data'][_0x237a70(0x1a3)])){clearInterval(pollingInterval),showAlert(_0x237a70(0x183),'info');try{const _0x3eca3b=await fetch(_0x237a70(0x198),{'method':_0x237a70(0x15c),'headers':{'Content-Type':_0x237a70(0x18a)},'body':JSON[_0x237a70(0x19d)]({'username':_0x186876,'changeDays':_0x454340})}),_0x2f8ae0=await _0x3eca3b['json']();if(!_0x3eca3b['ok'])throw new Error(_0x2f8ae0[_0x237a70(0x160)]||'Gagal\x20memperpanjang');showAlert('Sukses\x20diperpanjang\x20+'+_0x454340+'\x20hari!','success');}catch(_0x3dd565){showAlert(_0x3dd565[_0x237a70(0x160)],_0x237a70(0x175));}finally{_0x594ff8[_0x237a70(0x199)]=![],_0x594ff8[_0x237a70(0x1aa)]=_0x237a70(0x1a7),document[_0x237a70(0x16b)](_0x237a70(0x190))[_0x237a70(0x15b)][_0x237a70(0x185)]=_0x237a70(0x16e);}}},0x7d0);}),document[_0xd93bb8(0x16b)]('cancelBtn')[_0xd93bb8(0x195)](_0xd93bb8(0x18f),async()=>{const _0x1ff8b1=_0xd93bb8;if(!currentTransactionId)return;const _0xf7c52e=document[_0x1ff8b1(0x16b)]('cancelBtn'),_0xc51705=document[_0x1ff8b1(0x16b)](_0x1ff8b1(0x170));_0xf7c52e[_0x1ff8b1(0x199)]=!![],showAlert(_0x1ff8b1(0x17f),_0x1ff8b1(0x177));try{const _0x506db5=await cancelTransaction(currentTransactionId);if(!_0x506db5[_0x1ff8b1(0x16d)])throw new Error(_0x506db5[_0x1ff8b1(0x160)]||_0x1ff8b1(0x157));showAlert(_0x1ff8b1(0x16a),_0x1ff8b1(0x16d));}catch(_0x473e29){showAlert('❌\x20'+_0x473e29[_0x1ff8b1(0x160)],_0x1ff8b1(0x175));}finally{clearInterval(pollingInterval),currentTransactionId=null,pollingInterval=null,_0xf7c52e[_0x1ff8b1(0x15b)][_0x1ff8b1(0x185)]=_0x1ff8b1(0x16e),document[_0x1ff8b1(0x16b)](_0x1ff8b1(0x197))[_0x1ff8b1(0x15b)][_0x1ff8b1(0x185)]=_0x1ff8b1(0x16e),_0xc51705[_0x1ff8b1(0x199)]=![],_0xc51705['innerText']=_0x1ff8b1(0x1a7),document[_0x1ff8b1(0x16b)](_0x1ff8b1(0x15d))['value']='',document[_0x1ff8b1(0x16b)]('email')[_0x1ff8b1(0x182)]='',document[_0x1ff8b1(0x16b)](_0x1ff8b1(0x1a4))[_0x1ff8b1(0x182)]='';}});
+const API_CREATE = 'https://api-payment-yudzxml.vercel.app/api/createTransaction';
+  const API_STATUS = 'https://api-payment-yudzxml.vercel.app/api/getTransaction';
+  const API_CANCEL = 'https://api-payment-yudzxml.vercel.app/api/cancelTransaction';
+
+  let currentTransactionId = null;
+  let pollingInterval = null;
+
+  function showAlert(msg, type = 'success') {
+    const box = document.getElementById('customAlert');
+    box.className = '';
+    box.classList.add('show', type);
+    document.getElementById('customAlertText').innerText = msg;
+    clearTimeout(box.timer);
+    box.timer = setTimeout(hideAlert, 4000);
+  }
+
+  function hideAlert() {
+    const box = document.getElementById('customAlert');
+    box.classList.remove('show', 'success', 'error', 'info');
+  }
+
+  async function createTransaction(external_id, amount, name, email, phone) {
+    const payload = {
+      external_id,
+      amount,
+      description: 'Perpanjangan akun',
+      customer_name: name,
+      customer_email: email,
+      customer_phone: phone,
+      webhook_url: ''
+    };
+    const res = await fetch(API_CREATE, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    return res.json();
+  }
+
+  async function getTransaction(id) {
+    const res = await fetch(`${API_STATUS}?id=${id}`);
+    return res.json();
+  }
+
+  async function cancelTransaction(id) {
+  try {
+    const response = await fetch(`https://api-payment-yudzxml.vercel.app/api/cancelTransaction?id=${encodeURIComponent(id)}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      return { success: false, message: data.error || 'Gagal membatalkan transaksi.' };
+    }
+
+    return data
+  } catch (err) {
+    console.error('❌ Gagal membatalkan transaksi:', err);
+    return { success: false, message: err.message || 'Terjadi kesalahan saat membatalkan.' };
+  }
+}
+
+  document.getElementById('payBtn').addEventListener('click', async () => {
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const [days, price] = document.getElementById('paket').value.split('|').map(Number);
+    if (!name) return showAlert('Nama wajib diisi!', 'error');
+    if (!email) return showAlert('Email wajib diisi!', 'error');
+    if (!phone) return showAlert('Nomor telepon wajib diisi!', 'error');
+
+    const btn = document.getElementById('payBtn');
+    btn.disabled = true;
+    btn.innerText = 'Membuat transaksi...';
+
+    const externalId = `ORDER${Math.floor(100000 + Math.random() * 900000)}`;
+    let trx;
+    try {
+      trx = await createTransaction(externalId, price, name, email, phone);
+      if (!trx.success) throw new Error(trx.message || 'Gagal membuat transaksi');
+    } catch (e) {
+      showAlert(e.message, 'error');
+      btn.disabled = false;
+      btn.innerText = 'Bayar & Perpanjang';
+      return;
+    }
+
+    // Simpan ID transaksi & tampilkan QR
+    currentTransactionId = trx.data.transaction_id;
+    const kodeUnik = trx.data.unique_code;
+    const biayaAdmin = trx.data.fee;
+    const biayaPpn = 
+    document.getElementById('qrisImg').src = `/api/qrGenerate?text=${encodeURIComponent(trx.data.qris_url)}`;
+    
+    document.getElementById('expireInfo').innerText =
+   `Ppn: Rp ${ (trx.data.unique_code + trx.data.fee).toLocaleString('id-ID') }\n`;
+  `Total: Rp ${trx.data.total_amount.toLocaleString('id-ID')}\n` +
+  'Expired: ' + new Date(trx.data.expired_at).toLocaleString('id-ID');
+    document.getElementById('qrisContainer').style.display = 'block';
+    document.getElementById('cancelBtn').style.display = 'inline-block';
+    btn.innerText = 'Menunggu pembayaran...';
+
+    // Mulai polling
+    pollingInterval = setInterval(async () => {
+      const statusRes = await getTransaction(currentTransactionId);
+      if (statusRes.success && /paid/i.test(statusRes.data.status)) {
+        clearInterval(pollingInterval);
+        showAlert('Pembayaran terkonfirmasi! Memperpanjang...', 'info');
+
+        try {
+          const updRes = await fetch("/api/update-user", {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username: email, changeDays: days })
+          });
+          const updData = await updRes.json();
+          if (!updRes.ok) throw new Error(updData.message || 'Gagal memperpanjang');
+          showAlert(`Sukses diperpanjang +${days} hari!`, 'success');
+        } catch (e) {
+          showAlert(e.message, 'error');
+        } finally {
+          btn.disabled = false;
+          btn.innerText = 'Bayar & Perpanjang';
+          document.getElementById('cancelBtn').style.display = 'none';
+        }
+      }
+    }, 2000);
+  });
+
+  document.getElementById('cancelBtn').addEventListener('click', async () => {
+  if (!currentTransactionId) return;
+
+  const cancelBtn = document.getElementById('cancelBtn');
+  const payBtn = document.getElementById('payBtn');
+
+  cancelBtn.disabled = true;
+  showAlert('Membatalkan transaksi...', 'info');
+
+  try {
+    const cancelRes = await cancelTransaction(currentTransactionId);
+    if (!cancelRes.success) throw new Error(cancelRes.message || 'Gagal membatalkan');
+
+    showAlert('✅ Transaksi berhasil dibatalkan.', 'success');
+  } catch (e) {
+    showAlert(`❌ ${e.message}`, 'error');
+  } finally {
+    clearInterval(pollingInterval);
+    currentTransactionId = null;
+    pollingInterval = null;
+
+    cancelBtn.style.display = 'none';
+    document.getElementById('qrisContainer').style.display = 'none';
+
+    payBtn.disabled = false;
+    payBtn.innerText = 'Bayar & Perpanjang';
+
+    // Kosongkan input form
+    document.getElementById('name').value = '';
+    document.getElementById('email').value = '';
+    document.getElementById('phone').value = '';
+  }
+});
