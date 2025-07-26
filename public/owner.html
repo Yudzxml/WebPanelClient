@@ -246,23 +246,36 @@
     async function addUser() {
   const username = document.getElementById('newUsername').value.trim();
   const password = document.getElementById('newPassword').value.trim();
-  const activeDays = parseInt(document.getElementById('activeDays').value.trim());
+  const activeDaysInput = document.getElementById('activeDays').value.trim();
 
-  if (!username || !password || isNaN(activeDays) || activeDays <= 0) {
-    showAlert('Isi semua field dengan benar!', 'info');
+  if (!username || !password || !activeDaysInput) {
+    showAlert('Semua field wajib diisi!', 'info');
     return;
   }
 
-  const expiredAt = Date.now() + activeDays * 24 * 60 * 60 * 1000;
+  const activeDays = parseInt(activeDaysInput);
+  if (isNaN(activeDays) || activeDays <= 0) {
+    showAlert('Masa aktif harus berupa angka dan minimal 1 hari.', 'info');
+    return;
+  }
 
   try {
     const res = await fetch('/api/addUser', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password, expiredAt })
+      body: JSON.stringify({ username, password, activeDays }) // ✅ Kirim activeDays
     });
 
-    const data = await res.json();
+    const rawText = await res.text();
+    console.log('Respon backend:', rawText); // 🔍 Debug log
+
+    let data;
+    try {
+      data = JSON.parse(rawText);
+    } catch {
+      throw new Error('Respon tidak valid dari server');
+    }
+
     if (!res.ok) throw new Error(data.message || 'Gagal menambahkan user');
 
     showAlert('User berhasil ditambahkan!', 'success');
@@ -270,7 +283,8 @@
     document.getElementById('newPassword').value = '';
     document.getElementById('activeDays').value = '';
   } catch (err) {
-    showAlert(err.message, 'error');
+    console.error('Error saat menambah user:', err); // 🔍 Debug log
+    showAlert(err.message || 'Terjadi kesalahan saat menambah user', 'error');
   }
 }
 
